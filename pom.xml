@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github.15838028035</groupId>
+	<artifactId>common-code-generate</artifactId>
+	<packaging>jar</packaging>
+	
+	<version>0.0.1-SNAPSHOT</version>
+
+	<scm>
+		<connection>scm:git:git@github.com:15838028035/common-code-generate.git</connection>
+		<developerConnection>scm:git:git@github.com:15838028035/common-code-generate.git</developerConnection>
+		<url>scm:git:git@github.com:15838028035/common-code-generate.git</url>
+	</scm>
+	
+	<!-- 设定除中央仓repo1.maven.org/maven2/)外的其他仓库,按设定顺序进行查 -->
+	<repositories>
+		<repository>
+			<id>central</id>
+			<name>Central Repository</name>
+			<url>http://repo.maven.apache.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<repository>
+            <id>oss-releases</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>oss-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        
+	</distributionManagement>
+
+<properties>
+		<!-- 主要依赖库的版本定义 -->
+		<junit.version>4.11</junit.version>
+		<spring.version>3.2.11.RELEASE</spring.version>
+		<struts.version>2.3.16.3</struts.version>
+		<ibatis.version>2.0.8</ibatis.version>
+
+		<orgjson.version>20140107</orgjson.version>
+		<slf4j.version>1.6.4</slf4j.version>
+
+		<!-- Plugin的属性定 -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jdk.version>1.7</jdk.version>
+
+	</properties>
+
+	<dependencies>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.struts</groupId>
+				<artifactId>struts2-spring-plugin</artifactId>
+				<version>${struts.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.freemarker</groupId>
+				<artifactId>freemarker</artifactId>
+				<version>2.3.18</version>
+			</dependency>
+
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+		</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.properties</include>
+					<include>**/*.ftl</include>
+				</includes>
+			</resource>
+		</resources>
+
+			<plugins>
+
+				<!-- compiler插件, 设定JDK版本 -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.2</version>
+					<configuration>
+						<source>${jdk.version}</source>
+						<target>${jdk.version}</target>
+                   		 <encoding>UTF-8</encoding>
+						<showWarnings>true</showWarnings>
+	                    <compilerArguments>  
+	                        <verbose />  
+	                    </compilerArguments>
+					</configuration>
+				</plugin>
+
+				<!-- test插件, 仅测试名称为*Test的类,使用支持分组测试的surefire-junit47 driver -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.12.4</version>
+					<configuration>
+						<testFailureIgnore>true</testFailureIgnore>
+						<argLine>-Xmx1024M</argLine>
+					</configuration>
+				</plugin>
+
+			</plugins>
+	
+	</build>
+	
+	<profiles>
+		<profile>
+			<id>jar-with-dependencies</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<version>2.2.1</version>
+						<configuration>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<descriptor>src/main/assembly/assembly.xml</descriptor>
+						</configuration>
+						<executions>
+							<execution>
+								<id>make-jar</id>
+								<phase>package</phase>
+								<goals>
+									<goal>single</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
+</project>
