@@ -8,7 +8,7 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
+import com.lj.app.core.common.generator.util.StringUtil;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -74,12 +74,12 @@ public class FreemarkerInputStream extends InputStream {
   private ByteArrayInputStream processByFreemarker(InputStream input) {
     try {
       Map<String, Object> rootMap = newTemplateVariables();
-      InputStreamReader reader = StringUtils.isBlank(encoding) ? new InputStreamReader(input)
+      InputStreamReader reader = StringUtil.isBlank(encoding) ? new InputStreamReader(input)
           : new InputStreamReader(input, encoding);
       Template template = new Template("" + input, reader, conf);
       StringWriter cachedTemplateOutput = new StringWriter();
       template.process(rootMap, cachedTemplateOutput);
-      return new ByteArrayInputStream(StringUtils.isBlank(encoding) ? cachedTemplateOutput.toString().getBytes()
+      return new ByteArrayInputStream(StringUtil.isBlank(encoding) ? cachedTemplateOutput.toString().getBytes()
           : cachedTemplateOutput.toString().getBytes(encoding));
     } catch (IOException e) {
       throw new RuntimeException(e);

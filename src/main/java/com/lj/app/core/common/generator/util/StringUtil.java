@@ -19,19 +19,12 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.web.util.HtmlUtils;
-
 /**
  * 
  * 内容摘要:处理数字类型共用类.
  */
 public class StringUtil {
 
-
-  private static Log logger = LogFactory.getLog(StringUtil.class);
   
   public static final String UPPERCASE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   public static final String LOWERCASE_CHARS = "abcdefghijklmnopqrstuvwxyz";
@@ -486,30 +479,6 @@ public class StringUtil {
   }
 
   /**
-   * 检验手机号格式是否正确
-   * 
-   * @param mobile
-   *          手机号码
-   * @return boolean 是否
-   */
-  public static boolean verifyMobile(String mobile) {
-    if (StringUtils.isBlank(mobile) || mobile.length() != 11) {
-      return false;
-    } else if (!isNumber(mobile)) {
-      return false;
-    } else {
-      boolean tag = true;
-      final String pattern1 = "^(((1[3-9][0-9]{1}))+\\d{8})$";
-      final Pattern pattern = Pattern.compile(pattern1);
-      final Matcher mat = pattern.matcher(mobile);
-      if (!mat.find()) {
-        tag = false;
-      }
-      return tag;
-    }
-  }
-
-  /**
    * 小写转换大写
    * 
    * @param string
@@ -743,7 +712,7 @@ public class StringUtil {
         return Integer.parseInt(input.toString());
       }
     } catch (Exception e) {
-      logger.error(e);
+      e.printStackTrace();
     }
     return defaultInt;
   }
@@ -762,7 +731,7 @@ public class StringUtil {
         return Float.parseFloat(input.toString());
       }
     } catch (Exception ex) {
-      logger.error(ex);
+      ex.printStackTrace();
     }
     return defaultFloat;
   }
@@ -780,7 +749,7 @@ public class StringUtil {
       byte[] bytes = input.getBytes("ISO8859-1");
       return new String(bytes, "UTF-8");
     } catch (Exception ex) {
-      logger.error(ex);
+      ex.printStackTrace();
     }
     return input;
   }
@@ -819,7 +788,7 @@ public class StringUtil {
       byte[] bytes = input.getBytes(sourceEncoding);
       return new String(bytes, targetEncoding);
     } catch (Exception ex) {
-      logger.error(ex);
+      ex.printStackTrace();
     }
     return input;
   }
@@ -1176,11 +1145,6 @@ public class StringUtil {
     return generateRandomChars(NUMBER_CHARS, n);
   }
 
-  public static String htmlEscape(String str) {
-    return HtmlUtils.htmlEscape(str);
-  }
-
-
   /**
    * 显示实体类的属性和方法
    * 
@@ -1209,7 +1173,7 @@ public class StringUtil {
           }
         }
       } catch (Exception ex) {
-        logger.error(ex);
+        ex.printStackTrace();
       }
       cls = cls.getSuperclass();
     }
@@ -1230,7 +1194,7 @@ public class StringUtil {
       String flowContentStr = new String(b, "UTF-8");
       return flowContentStr;
     } catch (Exception e) {
-      logger.error(e);
+      e.printStackTrace();
     }
     return "";
   }
@@ -1252,7 +1216,7 @@ public class StringUtil {
       oos.close();
       bos.close();
     } catch (IOException ex) {
-      logger.error(ex);
+      ex.printStackTrace();
     }
     return bytes;
   }
@@ -1272,12 +1236,11 @@ public class StringUtil {
       ois.close();
       bis.close();
     } catch (IOException ex) {
-      logger.error(ex);
+      ex.printStackTrace();
     } catch (ClassNotFoundException ex) {
-      logger.error(ex);
+      ex.printStackTrace();
     }
     return obj;
   }
-  
  
 }

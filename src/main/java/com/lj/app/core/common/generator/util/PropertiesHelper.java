@@ -14,7 +14,6 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
-import com.lj.app.core.common.generator.util.PropertyPlaceholderUtil.PropertyPlaceholderConfigurerResolver;
 
 public class PropertiesHelper {
   boolean isSearchSystemProperty = false;
@@ -119,8 +118,6 @@ public class PropertiesHelper {
   }
 
   public PropertiesHelper setProperty(String key, String value) {
-    value = resolveProperty(value, getProperties());
-    key = resolveProperty(key, getProperties());
     p.setProperty(key, value);
     return this;
   }
@@ -193,19 +190,11 @@ public class PropertiesHelper {
     Properties result = new Properties();
     for (Object s : props.keySet()) {
       String sourceKey = s.toString();
-      String key = resolveProperty(sourceKey, props);
-      String value = resolveProperty(props.getProperty(sourceKey), props);
+      String key = sourceKey;
+      String value = props.getProperty(sourceKey);
       result.setProperty(key, value);
     }
     return result;
   }
-
-  private static String resolveProperty(String v, Properties props) {
-    PropertyPlaceholderConfigurerResolver propertyPlaceholderConfigurerResolver = new PropertyPlaceholderConfigurerResolver(
-        props);
-    return propertyPlaceholderHelper.replacePlaceholders(v, propertyPlaceholderConfigurerResolver);
-  }
-
-  static PropertyPlaceholderUtil propertyPlaceholderHelper = new PropertyPlaceholderUtil("${", "}", ":", false);
 
 }

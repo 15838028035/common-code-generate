@@ -47,8 +47,8 @@
 		<struts.version>2.3.16.3</struts.version>
 		<ibatis.version>2.0.8</ibatis.version>
 
-		<orgjson.version>20140107</orgjson.version>
 		<slf4j.version>1.6.4</slf4j.version>
+		<mysql.version>5.1.43</mysql.version>
 
 		<!-- Plugin的属性定 -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -59,22 +59,22 @@
 	<dependencies>
 
 			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-core</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.apache.struts</groupId>
-				<artifactId>struts2-spring-plugin</artifactId>
-				<version>${struts.version}</version>
-			</dependency>
+		      <groupId>commons-io</groupId>
+		      <artifactId>commons-io</artifactId>
+		      <version>2.2</version>
+            </dependency>
 
 			<dependency>
 				<groupId>org.freemarker</groupId>
 				<artifactId>freemarker</artifactId>
 				<version>2.3.18</version>
 			</dependency>
+			
+			 <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
 
 			<dependency>
 				<groupId>junit</groupId>

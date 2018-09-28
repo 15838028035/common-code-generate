@@ -10,13 +10,11 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.lj.app.core.common.exception.FreemarkerTemplateException;
+import com.lj.app.core.common.generator.GeneratorConstants;
+import com.lj.app.core.common.generator.GeneratorProperties;
 import com.lj.app.core.common.generator.util.ClassHelper;
-import com.lj.app.core.common.properties.PropertiesUtil;
+import com.lj.app.core.common.generator.util.GLogger;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -28,13 +26,6 @@ import freemarker.template.TemplateException;
  *
  */
 public class FreeMarkerTemplateUtils {
-
-  private static Log log = LogFactory.getLog(FreeMarkerTemplateUtils.class);
-
-  public static final String TEST_TEMPLATE_ROOT_DIR = PropertiesUtil.getProperty("TEST_TEMPLATE_ROOT_DIR",
-      "d:\\TEST_TEMPLATE_ROOT_DIR");
-  public static final String TEST_CLASSPATH_TEMPLATE_ROOT_DIR = PropertiesUtil
-      .getProperty("TEST_CLASSPATH_TEMPLATE_ROOT_DIR", "classpath:\\TEST_TEMPLATE_ROOT_DIR");
 
   private Configuration configuration = null;
 
@@ -54,7 +45,7 @@ public class FreeMarkerTemplateUtils {
    * @return String
    */
   public static String getFremarkerTemplateEncoding() {
-    return PropertiesUtil.getProperty("FREEMARKER_TEMPLATE_CODING", "UTF-8");
+    return GeneratorProperties.getProperty(GeneratorConstants.GENERATOR_SOURCE_ENCODING);
   }
 
   public String processTemplate(String templateName, Object model) throws FreemarkerTemplateException, Exception {
@@ -160,18 +151,6 @@ public class FreeMarkerTemplateUtils {
     }
   }
 
-  /**
-   * 获得测试模版目录
-   * 
-   * @return 配置对象
-   */
-  public static Configuration getTestConfiguration() throws Exception {
-    Configuration conf = new Configuration();
-    File file = FileUtils.getFile(FreeMarkerTemplateUtils.TEST_TEMPLATE_ROOT_DIR);
-    conf.setDirectoryForTemplateLoading(file);
-    return conf;
-  }
-
   public Configuration getConfiguration() {
     return configuration;
   }
@@ -197,14 +176,14 @@ public class FreeMarkerTemplateUtils {
   /** 得到模板可以引用的工具类 */
   public static Map getToolsMap() {
     Map toolsMap = new HashMap();
-    String[] tools = PropertiesUtil.getPropertyArray("template_tools_class");
+    String[] tools = GeneratorProperties.getStringArray(GeneratorConstants.GENERATOR_TOOLS_CLASS);
     for (String className : tools) {
       try {
         Object instance = ClassHelper.newInstance(className);
         toolsMap.put(Class.forName(className).getSimpleName(), instance);
-        log.debug("put tools class:" + className + " with key:" + Class.forName(className).getSimpleName());
+        GLogger.error("put tools class:" + className + " with key:" + Class.forName(className).getSimpleName());
       } catch (Exception e) {
-        log.error("cannot load tools by className:" + className + " cause:" + e);
+        GLogger.error("cannot load tools by className:" + className + " cause:" + e);
       }
     }
     return toolsMap;
