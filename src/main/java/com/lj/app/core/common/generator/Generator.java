@@ -46,8 +46,8 @@ public class Generator {
                                                                                    // java_src/**,java_test/**
   private String excludes = GeneratorProperties.getProperty("generator_excludes"); // 不需要处理的模板，使用逗号分隔符,示例值:
                                                                                    // java_src/**,java_test/**
-  private String sourceEncoding = GeneratorProperties.getProperty("generator_sourceEncoding");
-  private String outputEncoding = GeneratorProperties.getProperty("generator_outputEncoding");
+  private String sourceEncoding = GeneratorProperties.getProperty(GeneratorConstants.GENERATOR_SOURCE_ENCODING);
+  private String outputEncoding = GeneratorProperties.getProperty(GeneratorConstants.GENERATOR_OUTPUT_ENCODING);
 
   public void setTemplateRootDir(File templateRootDir) {
     setTemplateRootDirs(new File[] { templateRootDir });

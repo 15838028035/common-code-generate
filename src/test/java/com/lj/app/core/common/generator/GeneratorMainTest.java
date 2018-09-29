@@ -13,11 +13,11 @@ public class GeneratorMainTest {
 		GeneratorProperties.setProperty("author", "liujie");
 		
 		GeneratorFacade g = new GeneratorFacade();
-		g.getGenerator().setTemplateRootDir("classpath:template");
+		g.getGenerator().setTemplateRootDir("e:\\template");
 		
 		g.clean();
 		
-		g.generateByTable("UPM_USER");
+		g.generateByTable("user_info");
 
 		System.out.println("");
 		System.out
