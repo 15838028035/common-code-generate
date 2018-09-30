@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +22,7 @@ import com.lj.app.core.common.generator.util.FreemarkerHelper;
 import com.lj.app.core.common.generator.util.GLogger;
 import com.lj.app.core.common.generator.util.IOHelper;
 import com.lj.app.core.common.generator.util.StringHelper;
+import com.lj.app.core.common.generator.util.ZipUtils;
 
 import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
@@ -35,16 +37,16 @@ import freemarker.template.TemplateException;
  */
 public class Generator {
   private static final String GENERATOR_INSERT_LOCATION = "generator-insert-location";
-  private List templateRootDirs = new ArrayList();
+  private List<File> templateRootDirs = new ArrayList();
   private String outRootDir;
   private boolean ignoreTemplateGenerateException = true;
-  private String removeExtensions = GeneratorProperties.getProperty("generator_removeExtensions");
+  private String removeExtensions = GeneratorProperties.getProperty(GeneratorConstants.GENERATOR_REMOVE_EXTENSIONS);
 
   String encoding = "UTF-8";
 
-  private String includes = GeneratorProperties.getProperty("generator_includes"); // 需要处理的模板，使用逗号分隔符,示例值:
+  private String includes = GeneratorProperties.getProperty(GeneratorConstants.GENERATOR_INCLUDES); // 需要处理的模板，使用逗号分隔符,示例值:
                                                                                    // java_src/**,java_test/**
-  private String excludes = GeneratorProperties.getProperty("generator_excludes"); // 不需要处理的模板，使用逗号分隔符,示例值:
+  private String excludes = GeneratorProperties.getProperty(GeneratorConstants.GENERATOR_EXCLUDES); // 不需要处理的模板，使用逗号分隔符,示例值:
                                                                                    // java_src/**,java_test/**
   private String sourceEncoding = GeneratorProperties.getProperty(GeneratorConstants.GENERATOR_SOURCE_ENCODING);
   private String outputEncoding = GeneratorProperties.getProperty(GeneratorConstants.GENERATOR_OUTPUT_ENCODING);
@@ -186,6 +188,8 @@ public class Generator {
       throw new IllegalStateException("'templateRootDirs' cannot empty");
     }
 
+    templateRootDirs =  processTemplateRootDirs(); //新增处理zip、jar等模版目录
+
     List allExceptions = new ArrayList();
     for (int i = 0; i < this.templateRootDirs.size(); i++) {
       File templateRootDir = (File) this.templateRootDirs.get(i);
@@ -202,9 +206,9 @@ public class Generator {
     System.out
         .println("-------------------load template from templateRootDir = '" + templateRootDir.getAbsolutePath() + "'");
 
-    List templateFiles = new ArrayList();
+    List<File> templateFiles = new ArrayList();
     FileHelper.listFiles(templateRootDir, templateFiles);
-
+   
     List exceptions = new ArrayList();
     for (int i = 0; i < templateFiles.size(); i++) {
       File templateFile = (File) templateFiles.get(i);
@@ -267,6 +271,42 @@ public class Generator {
     }
     return exceptions;
   }
+
+    /**
+     * 用于子类覆盖,预处理模板目录,如执行文件解压动作 
+     **/
+  protected List<File> processTemplateRootDirs() throws Exception {
+    return unzipIfTemplateRootDirIsZipFile();
+  }
+  
+  /**
+   * 解压模板目录,如果模板目录是一个zip,jar文件 . 并且支持指定 zip文件的子目录作为模板目录,通过 !号分隔
+   * 指定zip文件: c:\\some.zip   
+   * 指定zip文件子目录: c:\some.zip!/folder/
+   * @throws MalformedURLException 
+   **/
+  private List<File> unzipIfTemplateRootDirIsZipFile() throws MalformedURLException {
+    List<File> unzipIfTemplateRootDirIsZipFile = new ArrayList<File>();
+    for(int i = 0; i < this.templateRootDirs.size(); i++) {
+      File file = templateRootDirs.get(i);
+      String templateRootDir = FileHelper.toFilePathIfIsURL(file);
+      
+      String subFolder = "";
+      int zipFileSeperatorIndexOf = templateRootDir.indexOf("!");
+      if(zipFileSeperatorIndexOf >= 0) {
+        subFolder = templateRootDir.substring(zipFileSeperatorIndexOf+1);
+        templateRootDir = templateRootDir.substring(0,zipFileSeperatorIndexOf);
+      }
+      
+      if(new File(templateRootDir).isFile()) {
+        File tempDir = ZipUtils.unzip2TempDir(new File(templateRootDir),"tmp_generator_template_folder_for_zipfile");
+        unzipIfTemplateRootDirIsZipFile.add(new File(tempDir,subFolder));
+      }else {
+          unzipIfTemplateRootDirIsZipFile.add(new File(templateRootDir,subFolder));
+      }
+    }
+    return unzipIfTemplateRootDirIsZipFile;
+}
 
   private Configuration newFreeMarkerConfiguration() throws IOException {
     Configuration config = new Configuration();
