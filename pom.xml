@@ -44,6 +44,7 @@
 		<!-- 主要依赖库的版本定义 -->
 		<junit.version>4.11</junit.version>
 		<mysql.version>5.1.43</mysql.version>
+		<org.apache.maven.plugins.maven-assembly-plugin.version>3.0.0</org.apache.maven.plugins.maven-assembly-plugin.version>
 
 		<!-- Plugin的属性定 -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -120,13 +121,16 @@
 			<build>
 				<plugins>
 					<plugin>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<version>3.1.0</version>
+						<groupId>org.apache.maven.plugins</groupId>
+                         <artifactId>maven-assembly-plugin</artifactId>
+                        <version>${org.apache.maven.plugins.maven-assembly-plugin.version}</version>
 						<configuration>
 							<descriptorRefs>
 								<descriptorRef>jar-with-dependencies</descriptorRef>
 							</descriptorRefs>
-							<descriptor>src/main/assembly/assembly.xml</descriptor>
+							<descriptors>
+							     <descriptor>${project.basedir}/src/main/assembly/assembly-descriptor.xml</descriptor>
+							</descriptors>
 						</configuration>
 						<executions>
 							<execution>

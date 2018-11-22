@@ -9,6 +9,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.InvalidPropertiesFormatException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -174,7 +175,20 @@ public class PropertiesHelper {
           if (resourceName.endsWith(".xml")) {
             properties.loadFromXML(input);
           } else {
-            properties.load(input);
+            Properties loadProperties = new Properties();
+            loadProperties.load(input);
+            
+            Iterator it = loadProperties.keySet().iterator();
+            while(it.hasNext()) {
+              String key = (String)it.next();
+              Object value = loadProperties.get(key);
+                if(properties.get(key)==null ) {
+                  properties.put(key, value);
+                }else {
+                  GLogger.debug("PropertiesHelper loadAllPropertiesFromClassLoader key " + key + " exists");
+                }
+              }
+            
           }
         } finally {
           if (input != null) {
