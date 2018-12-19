@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import com.lj.app.core.common.generator.provider.db.DbTableFactory;
 import com.lj.app.core.common.generator.provider.db.model.Table;
@@ -20,14 +22,19 @@ import com.lj.app.core.common.generator.util.StringHelper;
  * 生成器门面类
  *
  */
-public class GeneratorFacade {
+public class GeneratorProductAndConsumerFacade {
 
   private Generator generator = new Generator();
+  
+  /**
+   *阻塞队列
+   */
+  private BlockingQueue<String> blockingQueue = new LinkedBlockingDeque();
 
   /**
    * 构造函数
    */
-  public GeneratorFacade() {
+  public GeneratorProductAndConsumerFacade() {
     if (StringHelper.isNotBlank(GeneratorProperties.getProperty("outRoot"))) {
       generator.setOutRootDir(GeneratorProperties.getProperty("outRoot"));
     }
@@ -82,10 +89,27 @@ public class GeneratorFacade {
    */
   public void generateByTable(String ... tableNames) throws Exception {
     for (String tableName : tableNames) {
-      Generator g = createGeneratorForDbTable();
-      Table table = DbTableFactory.getInstance().getTable(tableName);
-      generateByTable(g, table);
+      blockingQueue.add(tableName);
     }
+    
+    consumerTable();
+  }
+  
+  /**
+   * 根据表名称生成代码
+   * @param tableName 表名称
+   * @throws Exception  异常
+   */
+  public void consumerTable() throws Exception {
+	  
+	  while(blockingQueue.size()>0) {
+		  String tableName = (String)  blockingQueue.take();
+		  
+	      Generator g = createGeneratorForDbTable();
+	      Table table = DbTableFactory.getInstance().getTable(tableName);
+	      generateByTable(g, table);
+	  }
+    
   }
   
 

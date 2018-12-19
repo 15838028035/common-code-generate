@@ -322,7 +322,7 @@ public class GeneratorMainFrame extends JFrame implements ActionListener {
 
       System.out.println("basepackage_dir:" + GeneratorProperties.getProperty("basepackage_dir"));
 
-      GeneratorFacade g = new GeneratorFacade();
+      GeneratorProductAndConsumerFacade g = new GeneratorProductAndConsumerFacade();
       g.clean();
       g.getGenerator().setTemplateRootDir(templateDirStr);
 
