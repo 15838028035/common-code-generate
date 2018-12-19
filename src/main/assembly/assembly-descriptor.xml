@@ -16,7 +16,7 @@
 <assembly>
 	<id>assembly</id>
 	<formats>
-		<format>zip.gz</format>
+		<format>zip</format>
 	</formats>
 	<includeBaseDirectory>true</includeBaseDirectory>
 	<fileSets>
