@@ -26,6 +26,11 @@
 			<fileMode>0755</fileMode>
 		</fileSet>
 		<fileSet>
+            <directory>${project.basedir}/src/main/resources</directory>
+            <outputDirectory>scripts</outputDirectory>
+            <fileMode>0755</fileMode>
+        </fileSet>
+		<fileSet>
 			<directory>${project.basedir}/src/main/scripts</directory>
 			<outputDirectory>scripts</outputDirectory>
 			<fileMode>0755</fileMode>
