@@ -29,7 +29,7 @@ public class GeneratorProductAndConsumerFacade {
   /**
    *阻塞队列
    */
-  private BlockingQueue<String> blockingQueue = new LinkedBlockingDeque();
+  private BlockingQueue<TableViewData> blockingQueue = new LinkedBlockingDeque();
 
   /**
    * 构造函数
@@ -89,9 +89,21 @@ public class GeneratorProductAndConsumerFacade {
    */
   public void generateByTable(String ... tableNames) throws Exception {
     for (String tableName : tableNames) {
-      blockingQueue.add(tableName);
+    	TableViewData tableViewData = new TableViewData();
+    	tableViewData.setTableName(tableName);
+      blockingQueue.add(tableViewData);
     }
     
+    consumerTable();
+  }
+  
+  /**
+   * 根据表名称生成代码
+   * @param tableName 表名称
+   * @throws Exception  异常
+   */
+  public void generateByTable(TableViewData tableViewData) throws Exception {
+     blockingQueue.add(tableViewData);
     consumerTable();
   }
   
@@ -103,10 +115,16 @@ public class GeneratorProductAndConsumerFacade {
   public void consumerTable() throws Exception {
 	  
 	  while(blockingQueue.size()>0) {
-		  String tableName = (String)  blockingQueue.take();
+		  TableViewData tableViewData = (TableViewData)  blockingQueue.take();
 		  
 	      Generator g = createGeneratorForDbTable();
-	      Table table = DbTableFactory.getInstance().getTable(tableName);
+	      
+	  	GeneratorProperties.setProperty("basepackage", tableViewData.getBasepackage());
+		GeneratorProperties.setProperty("basepackage_dir",
+	    GeneratorProperties.getProperty("basepackage").replace(".", "/"));
+
+	      
+	      Table table = DbTableFactory.getInstance().getTable(tableViewData.getTableName());
 	      generateByTable(g, table);
 	  }
     

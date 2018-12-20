@@ -63,6 +63,14 @@ public class DbTableFactory {
     }
     return this.connection;
   }
+  
+  /** 
+   * 重新连接数据库
+   */
+  public DbTableFactory releaseConnection() {
+	  this.connection= null;
+	  return this;
+  }
 
   public List getAllTables() throws Exception {
     Connection conn = getConnection();

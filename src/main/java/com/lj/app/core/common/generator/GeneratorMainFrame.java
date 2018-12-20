@@ -317,7 +317,7 @@ public class GeneratorMainFrame extends JFrame implements ActionListener {
       
       GeneratorProperties.setProperty("basepackage", basepackageStr);
       GeneratorProperties.setProperty("basepackage_dir",
-          GeneratorProperties.getProperty("basepackage").replace(".", "/"));
+      GeneratorProperties.getProperty("basepackage").replace(".", "/"));
       GeneratorProperties.setProperty("outRoot", outRootStr);
 
       System.out.println("basepackage_dir:" + GeneratorProperties.getProperty("basepackage_dir"));
@@ -326,7 +326,11 @@ public class GeneratorMainFrame extends JFrame implements ActionListener {
       g.clean();
       g.getGenerator().setTemplateRootDir(templateDirStr);
 
-      g.generateByTable(tableStr);
+      TableViewData tableViewData = new TableViewData();
+      tableViewData.setTableName(tableStr);
+      tableViewData.setBasepackage(basepackageStr);
+      
+      g.generateByTable(tableViewData);
 
       Runtime.getRuntime().exec("cmd.exe /c start " + outRootStr);
     } catch (Exception e) {
