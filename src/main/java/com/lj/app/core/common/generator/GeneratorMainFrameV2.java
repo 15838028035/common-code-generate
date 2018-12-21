@@ -1,15 +1,13 @@
 package com.lj.app.core.common.generator;
 
-import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -17,12 +15,13 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import com.lj.app.core.common.generator.provider.db.DbTableFactory;
 import com.lj.app.core.common.generator.provider.db.model.Table;
@@ -235,10 +234,6 @@ public class GeneratorMainFrameV2 extends JFrame  {
    * 添加组件
    */
   public void addComponent() {
-
-    titleInformation = new JLabel("代码生成器");
-
-    add(g, c, titleInformation, 0, 0, 1, 1);
     
     jdbcUrl = new JLabel("JdbcUrl：");
     add(g, c, jdbcUrl, 0, 1, 1, 1);
@@ -275,7 +270,7 @@ public class GeneratorMainFrameV2 extends JFrame  {
     schemaTextField.setText(schemaProp);
     add(g, c, schemaTextField, 1, 5, 2, 1);
 
-    basepackage = new JLabel("包名：");
+    basepackage = new JLabel("默认包名：");
     add(g, c, basepackage, 0, 6, 1, 1);
 
     basepackageTextField = new JTextField(100);
@@ -289,7 +284,7 @@ public class GeneratorMainFrameV2 extends JFrame  {
     outRootTextField.setText(outRootProp);
     add(g, c, outRootTextField, 1, 7, 2, 1);
 
-    table = new JLabel("表名：");
+    table = new JLabel("查询表名：");
     add(g, c, table, 0, 8, 1, 1);
 
     tableTextField = new JTextField(100);
@@ -312,8 +307,7 @@ public class GeneratorMainFrameV2 extends JFrame  {
      jTable = new JTable(new DefaultTableModel(vData , vName));
      jTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
      
-     jTable.setSize(1200, 400);
-     jTable.setBackground(new Color(244,200,220));
+     jTable.setPreferredScrollableViewportSize(new Dimension(1000, 30));
      
      
      jTable.getColumnModel().getColumn(0).setCellRenderer(new TableCellRenderer(){
@@ -339,20 +333,33 @@ public class GeneratorMainFrameV2 extends JFrame  {
         }});
        
     	 
-     jTable.updateUI(); 
+   
      
-    add(g, c,  jTable, 0, 10, 10, 100);
+     JTableHeader head=jTable.getTableHeader();
+     
+    add(g, c,  head, 0, 16, 200, 100,GridBagConstraints.PAGE_START);
+    
+    add(g, c,  jTable, 0, 20, 200, 140,GridBagConstraints.CENTER);
+    
+    TableColumn column = null;  
+    for (int i = 0; i < jTable.getColumnModel().getColumnCount(); i++) {  
+        column = jTable.getColumnModel().getColumn(i);  
+        column.setPreferredWidth(200);
+    }  
+    
+    jTable.setFillsViewportHeight(true);  
+    jTable.updateUI(); 
+    
     
     submit = new JButton("生成");
 
-    c.insets = new Insets(8, 10, 4, 0);
+    c.insets = new Insets(8, 22, 4, 0);
 
-    add(g, c, submit, 1, 150, 1, 1);
-    
+    add(g, c, submit, 1, 180, 1, 1);
 
     result = new JTextArea(5, 100);
 
-    add(g, c, result, 0, 170, 5, 2);
+    add(g, c, result, 0, 200, 5, 2);
 
   }
 
@@ -371,6 +378,28 @@ public class GeneratorMainFrameV2 extends JFrame  {
     c.gridx = x;
     c.gridy = y;
     c.anchor = GridBagConstraints.WEST;
+    c.gridwidth = gw;
+    c.gridheight = gh;
+
+    g.setConstraints(jc, c);
+    add(jc);
+  }
+  
+  /**
+   * 添加布局
+   * @param g 布局
+   * @param c 布局
+   * @param jc 布局
+   * @param x x
+   * @param y y
+   * @param gw 宽度
+   * @param gh 高度
+   */
+  public void add(GridBagLayout g, GridBagConstraints c, JComponent jc, int x, int y, int gw, int gh, int anchor) {
+
+    c.gridx = x;
+    c.gridy = y;
+    c.anchor = anchor;
     c.gridwidth = gw;
     c.gridheight = gh;
 
@@ -404,7 +433,18 @@ public class GeneratorMainFrameV2 extends JFrame  {
 				 List<Table> result = DbTableFactory.getInstance().releaseConnection().getAllTables();
 			      
 			      //清空容器
-			      vData.clear();
+				 GLogger.info("VdataSize:" + vData.size());
+				 vData.clear();
+				 
+				 //初始化添加
+			 	Vector vTmpInit = new Vector();
+			 	vTmpInit.add(-1);
+			 	vTmpInit.add(-1);
+	            vTmpInit.add("表名称");
+	            vTmpInit.add("备注");
+	            vTmpInit.add("自定义包名称");
+	            
+	            vData.add(vTmpInit);
 			     
 			      for (int i = 0; i < result.size(); i++) {
 				        Table table = (Table) result.get(i);
@@ -507,6 +547,6 @@ public class GeneratorMainFrameV2 extends JFrame  {
    * @param args 运行参数
    */
   public static void main(String [] args)  {
-    new GeneratorMainFrameV2("代码生成器");
+    new GeneratorMainFrameV2("代码生成器V2");
   }
 }
