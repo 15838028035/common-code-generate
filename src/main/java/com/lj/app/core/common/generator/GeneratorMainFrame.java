@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -253,6 +254,7 @@ public class GeneratorMainFrame extends JFrame implements ActionListener {
     add(g, c, outRootTextField, 1, 7, 2, 1);
 
     table = new JLabel("表名：");
+    
     add(g, c, table, 0, 8, 1, 1);
 
     tableTextField = new JTextField(50);

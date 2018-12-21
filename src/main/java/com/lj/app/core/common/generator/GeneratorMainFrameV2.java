@@ -1,5 +1,6 @@
 package com.lj.app.core.common.generator;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -15,11 +16,11 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
@@ -34,11 +35,6 @@ import com.lj.app.core.common.generator.util.StringUtil;
  *
  */
 public class GeneratorMainFrameV2 extends JFrame  {
-
-  /**
-   * 标题
-   */
-  private JLabel titleInformation;
 
   /**
    * jdbc.url
@@ -331,15 +327,15 @@ public class GeneratorMainFrameV2 extends JFrame  {
            ck.setHorizontalAlignment((int) 0.5f);
            return ck;
         }});
-       
-    	 
    
+     JScrollPane jScrollPane = new JScrollPane(jTable);
+     jScrollPane.setBackground(Color.BLACK);
+     jScrollPane.setSize(1000, 400);
      
-     JTableHeader head=jTable.getTableHeader();
-     
-    add(g, c,  head, 0, 16, 200, 100,GridBagConstraints.PAGE_START);
+     jScrollPane.setPreferredSize(new Dimension(1000, 500));
     
-    add(g, c,  jTable, 0, 20, 200, 140,GridBagConstraints.CENTER);
+    add(g, c,  jScrollPane, 0, 200, 800, 800,GridBagConstraints.CENTER);
+    
     
     TableColumn column = null;  
     for (int i = 0; i < jTable.getColumnModel().getColumnCount(); i++) {  
@@ -353,13 +349,13 @@ public class GeneratorMainFrameV2 extends JFrame  {
     
     submit = new JButton("生成");
 
-    c.insets = new Insets(8, 22, 4, 0);
+    c.insets = new Insets(8, 2, 4, 0);
 
-    add(g, c, submit, 1, 180, 1, 1);
+    add(g, c, submit, 1, 1600, 1, 1);
 
     result = new JTextArea(5, 100);
 
-    add(g, c, result, 0, 200, 5, 2);
+    add(g, c, result, 0, 1800, 5, 2);
 
   }
 
@@ -423,6 +419,9 @@ public class GeneratorMainFrameV2 extends JFrame  {
 			String jdbcPasswordText = jdbcPasswordTextFiled.getText();
 			
 			String retMsg = "查询数据库成功";
+			
+			long startTime = System.currentTimeMillis();
+			
 
 			try {
 
@@ -430,22 +429,14 @@ public class GeneratorMainFrameV2 extends JFrame  {
 				GeneratorProperties.setProperty("jdbc.username", jdbcUsername);
 				GeneratorProperties.setProperty("jdbc.password", jdbcPasswordText);
 				
+				result.setText("正在查询中，请稍等.....");
+				
 				 List<Table> result = DbTableFactory.getInstance().releaseConnection().getAllTables();
 			      
 			      //清空容器
 				 GLogger.info("VdataSize:" + vData.size());
 				 vData.clear();
 				 
-				 //初始化添加
-			 	Vector vTmpInit = new Vector();
-			 	vTmpInit.add(-1);
-			 	vTmpInit.add(-1);
-	            vTmpInit.add("表名称");
-	            vTmpInit.add("备注");
-	            vTmpInit.add("自定义包名称");
-	            
-	            vData.add(vTmpInit);
-			     
 			      for (int i = 0; i < result.size(); i++) {
 				        Table table = (Table) result.get(i);
 				        
@@ -481,7 +472,11 @@ public class GeneratorMainFrameV2 extends JFrame  {
 
 				GLogger.error("查询数据库出现异常", e);
 			}
-			result.setText(retMsg);
+			
+			long endTime = System.currentTimeMillis();
+			String executeTime = "查询时间:" +( endTime-startTime) +"ms \r\n";
+			
+			result.setText(executeTime + retMsg);
 
 		}
 	}
@@ -494,11 +489,14 @@ public class GeneratorMainFrameV2 extends JFrame  {
 			String outRootStr = outRootTextField.getText();
 			String tableStr = tableTextField.getText();
 
-			System.out.println("templateDirStr:" + templateDirStr);
+			GLogger.info("templateDirStr:" + templateDirStr);
 
 			String retMsg = "文件生成成功,文件目录:\n" + outRootStr;
+			long startTime = System.currentTimeMillis();
 
 			try {
+				
+				result.setText("正在执行中，请稍等.....");
 				
 				GeneratorProperties.setProperty("outRoot", outRootStr);
 				
@@ -513,8 +511,6 @@ public class GeneratorMainFrameV2 extends JFrame  {
 					 GLogger.info("选表格数据2" + rowindex + " " + jTable.getValueAt(rowindex, 2));
 					 GLogger.info("选表格数据3" + rowindex + " " + jTable.getValueAt(rowindex, 3));
 					
-
-						g.generateByTable(tableStr);
 						TableViewData tableViewData = new TableViewData();
 						tableViewData.setTableName((String)jTable.getValueAt(rowindex, 2));
 						
@@ -539,7 +535,10 @@ public class GeneratorMainFrameV2 extends JFrame  {
 			GLogger.info("*********************Generate Success**************************");
 			GLogger.info("***************************************************************");
 
-			result.setText(retMsg);
+			long endTime = System.currentTimeMillis();
+			String executeTime = "生成表个数:" + jTable.getSelectedRows().length + "\r \n 执行时间:" +( endTime-startTime) +"ms \r\n";
+			
+			result.setText(executeTime + retMsg);
 
 		}
 	}
