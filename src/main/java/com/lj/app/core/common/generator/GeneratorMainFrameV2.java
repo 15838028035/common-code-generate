@@ -500,6 +500,8 @@ public class GeneratorMainFrameV2 extends JFrame  {
 
 			try {
 				
+				GeneratorProperties.setProperty("outRoot", outRootStr);
+				
 				GeneratorProductAndConsumerFacade g = new GeneratorProductAndConsumerFacade();
 				g.clean();
 					
