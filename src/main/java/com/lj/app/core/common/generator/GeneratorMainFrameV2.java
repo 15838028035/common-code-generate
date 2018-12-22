@@ -171,12 +171,12 @@ public class GeneratorMainFrameV2 extends JFrame  {
   /**
    * 表格列
    */
-  private Vector vData = new Vector();
+  private Vector<Object> vData = new Vector();
   
   /**
    * 表格列名称
    */
-  private Vector vName = new Vector(); 
+  private Vector<Object> vName = new Vector(); 
   
 
   private GridBagLayout g = new GridBagLayout();
@@ -436,7 +436,7 @@ public class GeneratorMainFrameV2 extends JFrame  {
 				 vData.clear();
 				 
 				 // 性能优化，不要再for循环中创建对象
-				 Vector vTmp = null;
+				 Vector<Object> vTmp = null;
 			      for (int i = 0; i < result.size(); i++) {
 				        Table table = (Table) result.get(i);
 				        
@@ -487,7 +487,6 @@ public class GeneratorMainFrameV2 extends JFrame  {
 			String templateDirStr = templateDirTextFiled.getText();
 			String basepackageStr = basepackageTextField.getText();
 			String outRootStr = outRootTextField.getText();
-			String tableStr = tableTextField.getText();
 
 			GLogger.info("templateDirStr:" + templateDirStr);
 
