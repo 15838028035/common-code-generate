@@ -1,6 +1,5 @@
 package com.lj.app.core.common.generator;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -16,6 +15,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -191,7 +191,7 @@ public class GeneratorMainFrameV2 extends JFrame  {
   public GeneratorMainFrameV2(String str) {
     super(str);
 
-    setSize(1200, 900);
+    setSize(1000, 900);
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -233,19 +233,19 @@ public class GeneratorMainFrameV2 extends JFrame  {
     
     jdbcUrl = new JLabel("JdbcUrl：");
     add(g, c, jdbcUrl, 0, 1, 1, 1);
-    jdbcUrlTextFiled = new JTextField(100);
+    jdbcUrlTextFiled = new JTextField(50);
     jdbcUrlTextFiled.setText(jdbcUrlProp);
     add(g, c, jdbcUrlTextFiled, 1, 1, 1, 1);
     
     jdbcUsername = new JLabel("用户名：");
     add(g, c, jdbcUsername, 0, 2, 1, 1);
-    jdbcUsernameTextFiled = new JTextField(100);
+    jdbcUsernameTextFiled = new JTextField(50);
     jdbcUsernameTextFiled.setText(jdbcUsernameProp);
     add(g, c, jdbcUsernameTextFiled, 1, 2, 1, 1);
     
     jdbcPassword = new JLabel("密码：");
     add(g, c, jdbcPassword, 0, 3, 1, 1);
-    jdbcPasswordTextFiled = new JTextField(100);
+    jdbcPasswordTextFiled = new JTextField(50);
     jdbcPasswordTextFiled.setText(jdbcPasswordProp);
     add(g, c, jdbcPasswordTextFiled, 1, 3, 1, 1);
     
@@ -254,7 +254,7 @@ public class GeneratorMainFrameV2 extends JFrame  {
 
     add(g, c, templateDir, 0, 4, 1, 1);
 
-    templateDirTextFiled = new JTextField(100);
+    templateDirTextFiled = new JTextField(50);
     templateDirTextFiled.setText(templateDirProp);
 
     add(g, c, templateDirTextFiled, 1, 4, 1, 1);
@@ -262,28 +262,28 @@ public class GeneratorMainFrameV2 extends JFrame  {
     schema = new JLabel("schema：");
     add(g, c, schema, 0, 5, 1, 1);
 
-    schemaTextField = new JTextField(100);
+    schemaTextField = new JTextField(50);
     schemaTextField.setText(schemaProp);
     add(g, c, schemaTextField, 1, 5, 2, 1);
 
     basepackage = new JLabel("默认包名：");
     add(g, c, basepackage, 0, 6, 1, 1);
 
-    basepackageTextField = new JTextField(100);
+    basepackageTextField = new JTextField(50);
     basepackageTextField.setText(basepackageProp);
     add(g, c, basepackageTextField, 1, 6, 2, 1);
 
     outRoot = new JLabel("输出目录：");
     add(g, c, outRoot, 0, 7, 1, 1);
 
-    outRootTextField = new JTextField(100);
+    outRootTextField = new JTextField(50);
     outRootTextField.setText(outRootProp);
     add(g, c, outRootTextField, 1, 7, 2, 1);
 
     table = new JLabel("查询表名：");
     add(g, c, table, 0, 8, 1, 1);
 
-    tableTextField = new JTextField(100);
+    tableTextField = new JTextField(50);
     tableTextField.setText(tableProp);
     add(g, c, tableTextField, 1, 8, 2, 1);
 
@@ -329,18 +329,16 @@ public class GeneratorMainFrameV2 extends JFrame  {
         }});
    
      JScrollPane jScrollPane = new JScrollPane(jTable);
-     jScrollPane.setBackground(Color.BLACK);
-     jScrollPane.setSize(1000, 400);
      
-     jScrollPane.setPreferredSize(new Dimension(1000, 500));
+     jScrollPane.setPreferredSize(new Dimension(600, 400));
     
-    add(g, c,  jScrollPane, 0, 200, 800, 800,GridBagConstraints.CENTER);
+    add(g, c,  jScrollPane, 0, 200, 600, 400,GridBagConstraints.CENTER);
     
     
     TableColumn column = null;  
     for (int i = 0; i < jTable.getColumnModel().getColumnCount(); i++) {  
         column = jTable.getColumnModel().getColumn(i);  
-        column.setPreferredWidth(200);
+        column.setPreferredWidth(120);
     }  
     
     jTable.setFillsViewportHeight(true);  
@@ -353,7 +351,7 @@ public class GeneratorMainFrameV2 extends JFrame  {
 
     add(g, c, submit, 1, 1600, 1, 1);
 
-    result = new JTextArea(5, 100);
+    result = new JTextArea(5, 50);
 
     add(g, c, result, 0, 1800, 5, 2);
 
@@ -495,6 +493,11 @@ public class GeneratorMainFrameV2 extends JFrame  {
 			long startTime = System.currentTimeMillis();
 
 			try {
+				
+				if(jTable.getSelectedRows().length<=0) {
+					JOptionPane.showMessageDialog(null, "请选择至少一条记录", "提示信息",JOptionPane.ERROR_MESSAGE);
+					return ;
+				}
 				
 				result.setText("正在执行中，请稍等.....");
 				
