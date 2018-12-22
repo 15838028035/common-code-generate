@@ -78,12 +78,12 @@ public class DbTableFactory {
   }
 
   public Table getTable(String sqlTableName) throws Exception {
-    Table t = _getTable(sqlTableName);
+    Table t = _getTable(sqlTableName,true);
     if ((t == null) && (!sqlTableName.equals(sqlTableName.toUpperCase()))) {
-      t = _getTable(sqlTableName.toUpperCase());
+      t = _getTable(sqlTableName.toUpperCase(),true);
     }
     if ((t == null) && (!sqlTableName.equals(sqlTableName.toLowerCase()))) {
-      t = _getTable(sqlTableName.toLowerCase());
+      t = _getTable(sqlTableName.toLowerCase(), true);
     }
 
     if (t == null) {
@@ -92,54 +92,56 @@ public class DbTableFactory {
     return t;
   }
 
-  private Table _getTable(String sqlTableName) throws SQLException {
+  private Table _getTable(String sqlTableName,Boolean isNotOnlyTable) throws SQLException {
     Connection conn = getConnection();
     DatabaseMetaData dbMetaData = conn.getMetaData();
     ResultSet rs = conn.getMetaData().getTables(null, null, sqlTableName.toUpperCase(), new String[] { "TABLE" });
     if (rs.next()) {
-      Table table = createTable(conn, rs);
+      Table table = createTable(conn, rs,isNotOnlyTable);
       return table;
     }
     return null;
   }
+  
+  private Table createTable(Connection conn, ResultSet rs,Boolean isNotOnlyTable) throws SQLException {
+	    String realTableName = null;
+	    try {
+	      ResultSetMetaData rsMetaData = rs.getMetaData();
+	      String schemaName = rs.getString("TABLE_SCHEM") == null ? "" : rs.getString("TABLE_SCHEM");
+	      realTableName = rs.getString("TABLE_NAME");
+	      String tableType = rs.getString("TABLE_TYPE");
+	      String remarks = rs.getString("REMARKS");
+	      if ((remarks == null) && (isOracleDataBase())) {
+	        remarks = getOracleTableComments(realTableName);
+	      }
 
-  private Table createTable(Connection conn, ResultSet rs) throws SQLException {
-    String realTableName = null;
-    try {
-      ResultSetMetaData rsMetaData = rs.getMetaData();
-      String schemaName = rs.getString("TABLE_SCHEM") == null ? "" : rs.getString("TABLE_SCHEM");
-      realTableName = rs.getString("TABLE_NAME");
-      String tableType = rs.getString("TABLE_TYPE");
-      String remarks = rs.getString("REMARKS");
-      if ((remarks == null) && (isOracleDataBase())) {
-        remarks = getOracleTableComments(realTableName);
-      }
+	      Table table = new Table();
+	      table.setSqlName(realTableName);
+	      table.setRemarks(remarks);
+	      
+	      if(isNotOnlyTable) {
+		      if (("SYNONYM".equals(tableType)) && (isOracleDataBase())) {
+		        table.setOwnerSynonymName(getSynonymOwner(realTableName));
+		      }
+	
+		      retriveTableColumns(table);
+	
+		      table.initExportedKeys(conn.getMetaData());
+		      table.initImportedKeys(conn.getMetaData());
+	      }
+	      return table;
+	    } catch (SQLException e) {
+	      throw new RuntimeException("create table object error,tableName:" + realTableName, e);
+	    }
 
-      Table table = new Table();
-      table.setSqlName(realTableName);
-      table.setRemarks(remarks);
-
-      if (("SYNONYM".equals(tableType)) && (isOracleDataBase())) {
-        table.setOwnerSynonymName(getSynonymOwner(realTableName));
-      }
-
-      retriveTableColumns(table);
-
-      table.initExportedKeys(conn.getMetaData());
-      table.initImportedKeys(conn.getMetaData());
-      return table;
-    } catch (SQLException e) {
-      throw new RuntimeException("create table object error,tableName:" + realTableName, e);
-    }
-
-  }
+	  }
 
   private List getAllTables(Connection conn) throws SQLException {
     DatabaseMetaData dbMetaData = conn.getMetaData();
     ResultSet rs = dbMetaData.getTables(getCatalog(), getSchema(), null, null);
     List tables = new ArrayList();
     while (rs.next()) {
-      Table table = createTable(conn, rs);
+      Table table = createTable(conn, rs,false);
       tables.add(table);
     }
     return tables;
