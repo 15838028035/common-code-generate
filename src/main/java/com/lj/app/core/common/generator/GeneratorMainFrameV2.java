@@ -435,11 +435,13 @@ public class GeneratorMainFrameV2 extends JFrame  {
 				 GLogger.info("VdataSize:" + vData.size());
 				 vData.clear();
 				 
+				 // 性能优化，不要再for循环中创建对象
+				 Vector vTmp = null;
 			      for (int i = 0; i < result.size(); i++) {
 				        Table table = (Table) result.get(i);
 				        
 				        if(StringUtil.isBlank(tableName)) {
-				  	        Vector vTmp = new Vector();
+				  	         vTmp = new Vector();
 				  	        vTmp.add(i);
 				            vTmp.add(i);
 				            vTmp.add(table.getSqlName());
@@ -450,7 +452,7 @@ public class GeneratorMainFrameV2 extends JFrame  {
 				        }
 				        
 				        if(StringUtil.isNotBlank(tableName) && table.getSqlName().contains(tableName)) {
-				            Vector vTmp = new Vector();
+				             vTmp = new Vector();
 				            vTmp.add(i);
 				            vTmp.add(i);
 				            vTmp.add(table.getSqlName());
@@ -508,13 +510,16 @@ public class GeneratorMainFrameV2 extends JFrame  {
 					
 				g.getGenerator().setTemplateRootDir(templateDirStr);
 				
+				 // 性能优化，不要再for循环中创建对象
+				TableViewData tableViewData =null;
+				
 				 for(int rowindex : jTable.getSelectedRows()){
 					 		
 					 GLogger.info("选表格数据1" + rowindex + " " + jTable.getValueAt(rowindex, 1));
 					 GLogger.info("选表格数据2" + rowindex + " " + jTable.getValueAt(rowindex, 2));
 					 GLogger.info("选表格数据3" + rowindex + " " + jTable.getValueAt(rowindex, 3));
 					
-						TableViewData tableViewData = new TableViewData();
+						 tableViewData = new TableViewData();
 						tableViewData.setTableName((String)jTable.getValueAt(rowindex, 2));
 						
 						if(StringUtil.isNotBlank((String)jTable.getValueAt(rowindex, 4))) {
