@@ -78,7 +78,11 @@ public class CommandLine {
 			if(args.length == 0) return;
 			facade.getGenerator().setIncludes(getIncludes(args,1));
 			facade.getGenerator().setTemplateRootDir(getTemplateRootDir());
-			facade.generateByTable(args[0]);
+			if(args[0]!=null && "*".equals(args[0])) {
+				  facade.generateByAllTable();
+			}else {
+				facade.generateByTable(args[0]);
+			}
 			if(SystemHelper.isWindowsOS) {
 			    Runtime.getRuntime().exec("cmd.exe /c start "+GeneratorProperties.getRequiredProperty("outRoot").replace('/', '\\'));
 			}
