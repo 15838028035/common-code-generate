@@ -26,9 +26,16 @@ public class CommandLine {
 	private static void startProcess() throws Exception {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("templateRootDir:"+new File(getTemplateRootDir()).getAbsolutePath());
+		
+	  GeneratorProperties.setProperty("basepackage", getTemplateRootDir());
+      GeneratorProperties.setProperty("basepackage_dir",
+      GeneratorProperties.getProperty("basepackage").replace(".", "/"));
+	      
 		printUsages();
 		while(sc.hasNextLine()) {
 			try {
+				
+			      
 				processLine(sc);
 			}catch(Exception e) {
 				e.printStackTrace();
