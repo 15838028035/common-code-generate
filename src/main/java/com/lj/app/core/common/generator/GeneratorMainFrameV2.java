@@ -7,6 +7,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 
@@ -299,6 +302,7 @@ public class GeneratorMainFrameV2 extends JFrame  {
     vName.add("表名称");
     vName.add("备注");
     vName.add("自定义包名称");
+    vName.add("排序编号");
     
      jTable = new JTable(new DefaultTableModel(vData , vName));
      jTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -338,7 +342,7 @@ public class GeneratorMainFrameV2 extends JFrame  {
     TableColumn column = null;  
     for (int i = 0; i < jTable.getColumnModel().getColumnCount(); i++) {  
         column = jTable.getColumnModel().getColumn(i);  
-        column.setPreferredWidth(120);
+        column.setPreferredWidth(100);
     }  
     
     jTable.setFillsViewportHeight(true);  
@@ -447,17 +451,19 @@ public class GeneratorMainFrameV2 extends JFrame  {
 				            vTmp.add(table.getSqlName());
 				            vTmp.add(table.getRemarks());
 				            vTmp.add("");
+				            vTmp.add(10*i);
 				            
 				            vData.add(vTmp);
 				        }
 				        
-				        if(StringUtil.isNotBlank(tableName) && table.getSqlName().contains(tableName)) {
+				        if(StringUtil.isNotBlank(tableName) && table.getSqlName().toUpperCase().contains(tableName.toUpperCase())) {
 				             vTmp = new Vector();
 				            vTmp.add(i);
 				            vTmp.add(i);
 				            vTmp.add(table.getSqlName());
 				            vTmp.add(table.getRemarks());
 				            vTmp.add("");
+				            vTmp.add(10*i);
 				            
 				            vData.add(vTmp);
 			          }
@@ -512,6 +518,8 @@ public class GeneratorMainFrameV2 extends JFrame  {
 				 // 性能优化，不要再for循环中创建对象
 				TableViewData tableViewData =null;
 				
+				List<TableViewData> tableViewDataList = new ArrayList();
+				
 				 for(int rowindex : jTable.getSelectedRows()){
 					 		
 					 GLogger.info("选表格数据1" + rowindex + " " + jTable.getValueAt(rowindex, 1));
@@ -526,8 +534,25 @@ public class GeneratorMainFrameV2 extends JFrame  {
 						}
 						
 						tableViewData.setBasepackage(basepackageStr);
+						tableViewData.setSortNo(Integer.valueOf(jTable.getValueAt(rowindex, 5).toString()));
 						
+						
+						tableViewDataList.add(tableViewData);
 						g.generateByTable(tableViewData);
+				 }
+				 
+				 //自定义按照sortNo排序
+			        Collections.sort(tableViewDataList,new Comparator(){
+			            @Override
+			            public int compare(Object o1, Object o2) {
+			            	TableViewData dableViewData1 = (TableViewData)o1;
+			            	TableViewData dableViewData2 = (TableViewData)o2;
+			                 return dableViewData1.getSortNo().compareTo(dableViewData2.getSortNo());
+			            }
+			         });
+			 
+				 for(TableViewData  tableViewDataObj:tableViewDataList){
+						g.generateByTable(tableViewDataObj);
 				 }
 
 				Runtime.getRuntime().exec("cmd.exe /c start " + outRootStr);

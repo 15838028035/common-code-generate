@@ -16,6 +16,11 @@ public class TableViewData {
 	 * 基础包
 	 */
 	private String basepackage;
+	
+	/**
+	 * 排序编号
+	 */
+	private Integer sortNo;
 
 	public String getTableName() {
 		return tableName;
@@ -32,5 +37,12 @@ public class TableViewData {
 	public void setBasepackage(String basepackage) {
 		this.basepackage = basepackage;
 	}
-	
+
+	public Integer getSortNo() {
+		return sortNo;
+	}
+
+	public void setSortNo(Integer sortNo) {
+		this.sortNo = sortNo;
+	}
 }
