@@ -538,7 +538,6 @@ public class GeneratorMainFrameV2 extends JFrame  {
 						
 						
 						tableViewDataList.add(tableViewData);
-						g.generateByTable(tableViewData);
 				 }
 				 
 				 //自定义按照sortNo排序
@@ -547,7 +546,7 @@ public class GeneratorMainFrameV2 extends JFrame  {
 			            public int compare(Object o1, Object o2) {
 			            	TableViewData dableViewData1 = (TableViewData)o1;
 			            	TableViewData dableViewData2 = (TableViewData)o2;
-			                 return dableViewData1.getSortNo().compareTo(dableViewData2.getSortNo());
+			                 return dableViewData2.getSortNo().compareTo(dableViewData1.getSortNo());
 			            }
 			         });
 			 
