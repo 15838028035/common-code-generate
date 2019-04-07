@@ -14,9 +14,12 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import com.lj.app.core.common.generator.util.AntPathMatcher;
 import com.lj.app.core.common.generator.util.FileHelper;
 import com.lj.app.core.common.generator.util.FreemarkerHelper;
 import com.lj.app.core.common.generator.util.GLogger;
@@ -220,6 +223,11 @@ public class Generator {
       if (templateRelativePath.trim().equals("")) {
         continue;
       }
+      //跳过忽略目录
+      if(GeneratorHelper.isIgnoreTemplateProcess(templateFile, templateRelativePath,includes,excludes)) {
+    	  continue;
+      }
+      
       if (templateFile.getName().toLowerCase().endsWith(".include")) {
         System.out.println("[skip]\t\t endsWith '.include' template:" + templateRelativePath);
       } else {
@@ -451,6 +459,50 @@ public class Generator {
     FileHelper.deleteDirectory(new File(outRoot));
   }
 
+  static class GeneratorHelper {
+		
+		/**
+		 * 生成 路径值,如 pkg=com.company.project 将生成 pkg_dir=com/company/project的值
+		 * @param map
+		 * @return
+		 */
+		public static Map getDirValuesMap(Map map) {
+			Map dirValues = new HashMap();
+			Set<Object> keys = map.keySet();
+			for(Object key : keys) {
+				Object value = map.get(key);
+				if(key instanceof String && value instanceof String) {
+					String dirKey = key+"_dir";
+					String dirValue = value.toString().replace('.', '/');
+					dirValues.put(dirKey, dirValue);
+				}
+			}
+			return dirValues;
+		}
+		
+		public static boolean isIgnoreTemplateProcess(File srcFile,String templateFile,String includes,String excludes) {
+			if(srcFile.isDirectory() || srcFile.isHidden())
+				return true;
+			if(templateFile.trim().equals(""))
+				return true;
+			if(srcFile.getName().toLowerCase().endsWith(".include")){
+				GLogger.debug("[skip]\t\t endsWith '.include' template:"+templateFile);
+				return true;
+			}
+			templateFile = templateFile.replace('\\', '/');
+			for(String exclude : StringHelper.tokenizeToStringArray(excludes,",")) {
+				if(new AntPathMatcher().match(exclude.replace('\\', '/'), templateFile)) return true;
+			}
+			if(StringHelper.isBlank(includes)) {
+				return false;
+			}
+			for(String include : StringHelper.tokenizeToStringArray(includes,",")) {
+				if(new AntPathMatcher().match(include.replace('\\', '/'), templateFile)) return false;
+			}
+			return true;
+		} 
+  }
+		
   private String getOutRootDir() {
     if (this.outRootDir == null)  {
       throw new IllegalStateException("'outRootDir' property must be not null.");
