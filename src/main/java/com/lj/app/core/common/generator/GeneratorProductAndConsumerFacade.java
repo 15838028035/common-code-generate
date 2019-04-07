@@ -137,7 +137,7 @@ public class GeneratorProductAndConsumerFacade {
    * @param table 表名称
    * @throws Exception  异常
    */
-  private void generateByTable(Generator g, Table table) throws Exception {
+  public void generateByTable(Generator g, Table table) throws Exception {
     GeneratorModel m = GeneratorModel.newFromTable(table);
     String displayText = table.getSqlName() + " => " + table.getClassName();
     generateBy(g, m, displayText);

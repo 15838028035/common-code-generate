@@ -26,6 +26,16 @@ public class Column {
   private final String _remarks;
 
   private String javaType;
+  
+  /**
+   * 列表查詢類型 = like 
+   */
+  private String listMatchType = "=";
+  
+  /**
+   * 列表查詢類型 input textarea select radio  date checkbox file
+   */
+  private String formShowType = "input";
 
   public Column(Table table, int sqlType, String sqlTypeName, String sqlName, int size, int decimalDigits, boolean isPk,
       boolean isFk, String fkTableName, boolean isNullable, boolean isIndexed, boolean isUnique, String defaultValue,
@@ -286,4 +296,25 @@ public class Column {
   public void setFkTableName(String fkTableName) {
     this.fkTableName = fkTableName;
   }
+
+	public String getFormShowType() {
+		return formShowType;
+	}
+	
+	public void setFormShowType(String formShowType) {
+		this.formShowType = formShowType;
+	}
+	
+	public void setJavaType(String javaType) {
+		this.javaType = javaType;
+	}
+
+	public String getListMatchType() {
+		return listMatchType;
+	}
+
+	public void setListMatchType(String listMatchType) {
+		this.listMatchType = listMatchType;
+	}
+  
 }

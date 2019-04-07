@@ -116,7 +116,7 @@ public class CommandLine {
 	}
 
 	private static void printUsages() {
-		System.out.println("Usage : java -server -Xms128m -Xmx384m com.lj.app.core.common.generator.CommandLine -DtemplateRootDir=template");
+		System.out.println("Usage : java -server -Xms128m -Xmx384m com.lj.app.core.common.generator.CommandLine -DtemplateRootDir="+getTemplateRootDir());
 		System.out.println("\tprintAllTable tableName ");
 		System.out.println("\tgen table_name [include_path]: generate files by table_name");
 		System.out.println("\tdel table_name [include_path]: delete files by table_name");
