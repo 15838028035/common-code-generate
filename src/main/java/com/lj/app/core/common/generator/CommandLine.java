@@ -27,15 +27,13 @@ public class CommandLine {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("templateRootDir:"+new File(getTemplateRootDir()).getAbsolutePath());
 		
-	  GeneratorProperties.setProperty("basepackage", getTemplateRootDir());
+	  GeneratorProperties.setProperty("basepackage", getBasepackage());
       GeneratorProperties.setProperty("basepackage_dir",
       GeneratorProperties.getProperty("basepackage").replace(".", "/"));
 	      
 		printUsages();
 		while(sc.hasNextLine()) {
 			try {
-				
-			      
 				processLine(sc);
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -49,7 +47,36 @@ public class CommandLine {
 	private static void processLine(Scanner sc) throws Exception {
 		GeneratorFacade facade = new GeneratorFacade();
 		String cmd = sc.next();
-		if("printAllTable".equalsIgnoreCase(cmd)) {
+		if("setTemplate".equalsIgnoreCase(cmd)) {
+			  
+			  String[] args = nextArguments(sc);
+			  
+			  String TemplateDir = null;
+			  
+			  if(args.length>0) {
+				  TemplateDir = args[0];
+			  }
+			  
+		  System.setProperty("templateRootDir", TemplateDir);
+		      
+	    }else if("setPackage".equalsIgnoreCase(cmd)) {
+			  
+			  String[] args = nextArguments(sc);
+			  
+			  String basepackage = null;
+			  
+			  if(args.length>0) {
+				  basepackage = args[0];
+			  }
+		  
+		  System.out.println("basepackage:"+basepackage);
+			
+		  GeneratorProperties.setProperty("basepackage",basepackage);
+	      GeneratorProperties.setProperty("basepackage_dir",
+	      GeneratorProperties.getProperty("basepackage").replace(".", "/"));
+	      
+		      
+	    }else if("printAllTable".equalsIgnoreCase(cmd)) {
 		  
 		  String[] args = nextArguments(sc);
 		  
@@ -114,9 +141,14 @@ public class CommandLine {
 	private static String getTemplateRootDir() {
 		return System.getProperty("templateRootDir", "template");
 	}
+	private static String getBasepackage() {
+		return System.getProperty("basepackage", "a.b.c");
+	}
 
 	private static void printUsages() {
 		System.out.println("Usage : java -server -Xms128m -Xmx384m com.lj.app.core.common.generator.CommandLine -DtemplateRootDir="+getTemplateRootDir());
+		System.out.println("\tsetTemplate templateDir ");
+		System.out.println("\tsetPackage basepackage ");
 		System.out.println("\tprintAllTable tableName ");
 		System.out.println("\tgen table_name [include_path]: generate files by table_name");
 		System.out.println("\tdel table_name [include_path]: delete files by table_name");
@@ -124,6 +156,8 @@ public class CommandLine {
 		System.out.println("\tdel * [include_path]: search database all tables and delete files");
 		System.out.println("\tquit : quit");
 		System.out.println("\t[include_path] subdir of templateRootDir,example: 1. dao  2. dao/**,service/**");
+		System.out.println("\t current templateRootDir:"+getTemplateRootDir());
+		System.out.println("\t current basepackage:"+getBasepackage());
 		System.out.print("please input command:");
 	}
 	

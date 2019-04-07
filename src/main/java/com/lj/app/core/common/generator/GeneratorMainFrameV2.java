@@ -146,6 +146,11 @@ public class GeneratorMainFrameV2 extends JFrame  {
    * 输出目录
    */
   private String outRootProp;
+  
+  /**
+   * 清空输出目录
+   */
+  private  JCheckBox outRootProCheckBox;
   /**
    * 表名
    */
@@ -180,7 +185,6 @@ public class GeneratorMainFrameV2 extends JFrame  {
    * 表格列名称
    */
   private Vector<Object> vName = new Vector(); 
-  
 
   private GridBagLayout g = new GridBagLayout();
 
@@ -282,22 +286,26 @@ public class GeneratorMainFrameV2 extends JFrame  {
     outRootTextField = new JTextField(50);
     outRootTextField.setText(outRootProp);
     add(g, c, outRootTextField, 1, 7, 2, 1);
+    
+    outRootProCheckBox = new JCheckBox("清空输出目录",true);
+    
+    add(g, c, outRootProCheckBox, 1, 8, 2, 1);
 
     table = new JLabel("查询表名：");
-    add(g, c, table, 0, 8, 1, 1);
+    add(g, c, table, 0, 9, 1, 1);
 
     tableTextField = new JTextField(50);
     tableTextField.setText(tableProp);
-    add(g, c, tableTextField, 1, 8, 2, 1);
+    add(g, c, tableTextField, 1, 9, 2, 1);
 
     btnQuery = new JButton("查询");
 
-    c.insets = new Insets(8, 10, 4, 0);
+    c.insets = new Insets(9, 10, 4, 0);
 
-    add(g, c, btnQuery, 1, 9, 1, 1);
+    add(g, c, btnQuery, 1, 10, 1, 1);
     
     
-    vName.add("");
+    vName.add("复选框");
     vName.add("行号");
     vName.add("表名称");
     vName.add("备注");
@@ -305,6 +313,7 @@ public class GeneratorMainFrameV2 extends JFrame  {
     vName.add("排序编号");
     
      jTable = new JTable(new DefaultTableModel(vData , vName));
+     
      jTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
      
      jTable.setPreferredScrollableViewportSize(new Dimension(1000, 30));
@@ -332,6 +341,7 @@ public class GeneratorMainFrameV2 extends JFrame  {
            return ck;
         }});
    
+     
      JScrollPane jScrollPane = new JScrollPane(jTable);
      
      jScrollPane.setPreferredSize(new Dimension(600, 400));
@@ -446,29 +456,31 @@ public class GeneratorMainFrameV2 extends JFrame  {
 				        
 				        if(StringUtil.isBlank(tableName)) {
 				  	         vTmp = new Vector();
-				  	        vTmp.add(i);
-				            vTmp.add(i);
+				  	        vTmp.add(i+1);
+				            vTmp.add(i+1);
 				            vTmp.add(table.getSqlName());
 				            vTmp.add(table.getRemarks());
 				            vTmp.add("");
-				            vTmp.add(10*i);
+				            vTmp.add(i+1);
 				            
 				            vData.add(vTmp);
 				        }
 				        
 				        if(StringUtil.isNotBlank(tableName) && table.getSqlName().toUpperCase().contains(tableName.toUpperCase())) {
 				             vTmp = new Vector();
-				            vTmp.add(i);
-				            vTmp.add(i);
+				             vTmp.add(i+1);
+				             vTmp.add(i+1);
 				            vTmp.add(table.getSqlName());
 				            vTmp.add(table.getRemarks());
 				            vTmp.add("");
-				            vTmp.add(10*i);
+				            vTmp.add(i+1);
 				            
 				            vData.add(vTmp);
 			          }
 			       
 			      }
+			      
+			      changeAndSortTable(jTable, vName, vData);
 			      
 			      GLogger.info("开始更新表格数据,.........表格数据条数:" + vData.size());
 			      jTable.updateUI();
@@ -511,7 +523,10 @@ public class GeneratorMainFrameV2 extends JFrame  {
 				GeneratorProperties.setProperty("outRoot", outRootStr);
 				
 				GeneratorProductAndConsumerFacade g = new GeneratorProductAndConsumerFacade();
-				g.clean();
+				//清空输出目录
+				if(outRootProCheckBox.isSelected()) {
+					g.clean();
+				}
 					
 				g.getGenerator().setTemplateRootDir(templateDirStr);
 				
@@ -538,7 +553,6 @@ public class GeneratorMainFrameV2 extends JFrame  {
 						
 						
 						tableViewDataList.add(tableViewData);
-						g.generateByTable(tableViewData);
 				 }
 				 
 				 //自定义按照sortNo排序
@@ -547,7 +561,7 @@ public class GeneratorMainFrameV2 extends JFrame  {
 			            public int compare(Object o1, Object o2) {
 			            	TableViewData dableViewData1 = (TableViewData)o1;
 			            	TableViewData dableViewData2 = (TableViewData)o2;
-			                 return dableViewData1.getSortNo().compareTo(dableViewData2.getSortNo());
+			                 return dableViewData2.getSortNo().compareTo(dableViewData1.getSortNo());
 			            }
 			         });
 			 
@@ -573,6 +587,69 @@ public class GeneratorMainFrameV2 extends JFrame  {
 			result.setText(executeTime + retMsg);
 
 		}
+	}
+	
+	/**
+	 * 填充数据并排序后显示
+	 * @param table
+	 * @param tableHead
+	 * @param data
+	 */
+	public static void changeAndSortTable(JTable jTable, Vector tableHead,Vector data){
+		@SuppressWarnings("serial")
+		DefaultTableModel tableModel = new DefaultTableModel(data, tableHead){
+			
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			public Class getColumnClass(int column){
+				Class returnValue;
+				 if ((column >= 5) && (column < getColumnCount())) {  
+                     returnValue = getValueAt(0, column).getClass();  
+                 } else {  
+                     returnValue = Object.class;  
+                 }  
+                 return returnValue; 
+			}
+			
+		};
+		
+		TableSorter tableSorter  = new TableSorter(tableModel);
+		
+		jTable.setModel(tableSorter);
+		
+		tableSorter.setTableHeader(jTable.getTableHeader());
+		
+		 TableColumn column =null;
+		 for (int i = 0; i < jTable.getColumnModel().getColumnCount(); i++) {  
+			   column = jTable.getColumnModel().getColumn(i);  
+		        column.setPreferredWidth(100);
+		    }  
+		    
+	    jTable.setFillsViewportHeight(true);  
+	    
+	    jTable.getColumnModel().getColumn(0).setCellRenderer(new TableCellRenderer(){
+	        
+	        /*(non-Javadoc)
+	        * 此方法用于向方法调用者返回某一单元格的渲染器（即显示数据的组建--或控件）
+	        * 可以为JCheckBox JComboBox JTextArea 等
+	        * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
+	        */
+	       @Override
+	       public Component getTableCellRendererComponent(JTable table,
+	               Object value, boolean isSelected, boolean hasFocus,
+	               int row, int column) {
+	           // 创建用于返回的渲染组件
+	           JCheckBox ck = new JCheckBox();
+	           // 使具有焦点的行对应的复选框选中                     
+	           ck.setSelected(isSelected);
+	           ck.setOpaque(false);
+	           // 设置单选box.setSelected(hasFocus);
+	           // 使复选框在单元格内居中显示
+	           ck.setHorizontalAlignment((int) 0.5f);
+	           return ck;
+	        }});
+	    
+	    jTable.updateUI(); 
+
 	}
 
   /**
