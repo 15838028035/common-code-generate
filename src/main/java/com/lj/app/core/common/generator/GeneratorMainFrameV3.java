@@ -330,7 +330,7 @@ public class GeneratorMainFrameV3 extends JFrame  {
 
     add(g, c, submit, 1, 1600, 1, 1);
 
-    result = new JTextArea(10, 55);
+    result = new JTextArea(5, 50);
 
     add(g, c, new JScrollPane(result), 0, 1800, 10, 2);
 

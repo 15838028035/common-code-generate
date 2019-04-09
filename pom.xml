@@ -117,7 +117,7 @@
 	
 	<profiles>
 		<profile>
-			<id>jar-with-dependencies</id>
+			<id>profile1</id>
 			<build>
 				<plugins>
 					<plugin>
