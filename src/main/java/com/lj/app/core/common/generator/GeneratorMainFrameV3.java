@@ -15,6 +15,7 @@ import java.util.Vector;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -147,6 +148,12 @@ public class GeneratorMainFrameV3 extends JFrame  {
    * 输出目录
    */
   private String outRootProp;
+  
+  /**
+   * 清空输出目录
+   */
+  private  JCheckBox outRootProCheckBox;
+  
   /**
    * 表名
    */
@@ -283,19 +290,22 @@ public class GeneratorMainFrameV3 extends JFrame  {
     outRootTextField = new JTextField(50);
     outRootTextField.setText(outRootProp);
     add(g, c, outRootTextField, 1, 7, 2, 1);
+    
+    outRootProCheckBox = new JCheckBox("清空输出目录",true);
+    add(g, c, outRootProCheckBox, 1, 8, 2, 1);
 
     table = new JLabel("查询表名：");
-    add(g, c, table, 0, 8, 1, 1);
+    add(g, c, table, 0, 9, 1, 1);
 
     tableTextField = new JTextField(50);
     tableTextField.setText(tableProp);
-    add(g, c, tableTextField, 1, 8, 2, 1);
+    add(g, c, tableTextField, 1, 9, 2, 1);
 
     btnQuery = new JButton("查询");
 
     c.insets = new Insets(8, 10, 4, 0);
 
-    add(g, c, btnQuery, 1, 9, 1, 1);
+    add(g, c, btnQuery, 1, 10, 1, 1);
     
     vName.add("列名");
     vName.add("列类型");
@@ -539,7 +549,11 @@ public class GeneratorMainFrameV3 extends JFrame  {
 				GeneratorProperties.setProperty("outRoot", outRootStr);
 				
 				GeneratorProductAndConsumerFacade g = new GeneratorProductAndConsumerFacade();
-				g.clean();
+				
+				//清空输出目录
+				if(outRootProCheckBox.isSelected()) {
+					g.clean();
+				}
 					
 				g.getGenerator().setTemplateRootDir(templateDirStr);
 				
