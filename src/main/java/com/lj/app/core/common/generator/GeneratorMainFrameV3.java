@@ -330,9 +330,9 @@ public class GeneratorMainFrameV3 extends JFrame  {
 
     add(g, c, submit, 1, 1600, 1, 1);
 
-    result = new JTextArea(5, 50);
+    result = new JTextArea(10, 55);
 
-    add(g, c, result, 0, 1800, 5, 2);
+    add(g, c, new JScrollPane(result), 0, 1800, 10, 2);
 
   }
 
@@ -413,6 +413,9 @@ public class GeneratorMainFrameV3 extends JFrame  {
 				 //查詢到的表列表
 				 List<String> findTableList = new ArrayList<>();
 				 
+				 StringBuilder sb = new StringBuilder();
+				
+				 
 				 // 性能优化，不要再for循环中创建对象
 				 Vector<Object> vTmp = null;
 			      for (int i = 0; i < resultList.size(); i++) {
@@ -420,28 +423,30 @@ public class GeneratorMainFrameV3 extends JFrame  {
 				        
 				        if(StringUtil.isBlank(tableName)) {
 				            findTableList.add(table.getSqlName());
+				            sb.append(table.getRemarks() +"  : " + table.getSqlName()  +"\r\n");
 				        }
 				        
 				        if(StringUtil.isNotBlank(tableName) && table.getSqlName().toUpperCase().contains(tableName.toUpperCase())) {
 				            findTableList.add(table.getSqlName());
+				            sb.append(table.getRemarks() +" :  " + table.getSqlName()  +"\r\n");
 			          }
 			       
 			      }
 			      
 			      if(findTableList.isEmpty()) {
 			    	  JOptionPane.showMessageDialog(null, "对不起，您输入的表名查询不到记录", "提示信息",JOptionPane.ERROR_MESSAGE);
+			    	  result.setText("对不起，您输入的表名查询不到记录");
 					  return ;
 			      }
 			      
 			      if(findTableList !=null && findTableList.size() >1 ) {
-			    	  result.setText("查询到" + findTableList.size() +" 条记录,表信息:"+ StringUtil.toString(findTableList, "\r\n"));
+			    	  result.setText(sb.toString());
 			    	  JOptionPane.showMessageDialog(null, "查询到" + findTableList.size() +" 条记录,请输入表名称进行查询", "提示信息",JOptionPane.ERROR_MESSAGE);
 			    	  return ;
 			      }
 			      
 			      if(findTableList !=null && findTableList.size() ==1 ) {
 			    	  result.setText("查询到" + findTableList.size() +"条记录,表名称:" + findTableList.get(0));
-			    	  GLogger.info("tableName:" + findTableList.get(0));
 			    	  
 			    	  Table queryTable = DbTableFactory.getInstance().releaseConnection().getTable(findTableList.get(0));
 			    	  
