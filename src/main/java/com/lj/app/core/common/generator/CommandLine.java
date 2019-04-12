@@ -9,6 +9,7 @@ import java.util.Scanner;
 import com.lj.app.core.common.generator.provider.db.DbTableFactory;
 import com.lj.app.core.common.generator.provider.db.model.Table;
 import com.lj.app.core.common.generator.util.ArrayHelper;
+import com.lj.app.core.common.generator.util.GLogger;
 import com.lj.app.core.common.generator.util.StringHelper;
 import com.lj.app.core.common.generator.util.SystemHelper;
 /**
@@ -25,7 +26,7 @@ public class CommandLine {
 
 	private static void startProcess() throws Exception {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("templateRootDir:"+new File(getTemplateRootDir()).getAbsolutePath());
+		GLogger.info("templateRootDir:"+new File(getTemplateRootDir()).getAbsolutePath());
 		
 	  GeneratorProperties.setProperty("basepackage", getBasepackage());
       GeneratorProperties.setProperty("basepackage_dir",
@@ -69,7 +70,7 @@ public class CommandLine {
 				  basepackage = args[0];
 			  }
 		  
-		  System.out.println("basepackage:"+basepackage);
+		  GLogger.info("basepackage:"+basepackage);
 			
 		  GeneratorProperties.setProperty("basepackage",basepackage);
 	      GeneratorProperties.setProperty("basepackage_dir",
@@ -94,15 +95,15 @@ public class CommandLine {
 	        Table table = (Table) result.get(i);
 	        
 	        if(tableName ==null) {
-  	        System.out.println("================<"+table.getSqlName()+  ">==================");
-  	        System.out.println("sqlName:"+table.getSqlName());
-  	        System.out.println("remarks:"+table.getRemarks());
+  	        GLogger.info("================<"+table.getSqlName()+  ">==================");
+  	        GLogger.info("sqlName:"+table.getSqlName());
+  	        GLogger.info("remarks:"+table.getRemarks());
 	        }
 	        
 	        if(tableName!=null && table.getSqlName().contains(tableName)) {
-            System.out.println("================<"+table.getSqlName()+  ">==================");
-            System.out.println("sqlName:"+table.getSqlName());
-            System.out.println("remarks:"+table.getRemarks());
+            GLogger.info("================<"+table.getSqlName()+  ">==================");
+            GLogger.info("sqlName:"+table.getSqlName());
+            GLogger.info("remarks:"+table.getRemarks());
           }
 	       
 	      }
@@ -146,19 +147,19 @@ public class CommandLine {
 	}
 
 	private static void printUsages() {
-		System.out.println("Usage : java -server -Xms128m -Xmx384m com.lj.app.core.common.generator.CommandLine -DtemplateRootDir="+getTemplateRootDir());
-		System.out.println("\tsetTemplate templateDir ");
-		System.out.println("\tsetPackage basepackage ");
-		System.out.println("\tprintAllTable tableName ");
-		System.out.println("\tgen table_name [include_path]: generate files by table_name");
-		System.out.println("\tdel table_name [include_path]: delete files by table_name");
-		System.out.println("\tgen * [include_path]: search database all tables and generate files");
-		System.out.println("\tdel * [include_path]: search database all tables and delete files");
-		System.out.println("\tquit : quit");
-		System.out.println("\t[include_path] subdir of templateRootDir,example: 1. dao  2. dao/**,service/**");
-		System.out.println("\t current templateRootDir:"+getTemplateRootDir());
-		System.out.println("\t current basepackage:"+getBasepackage());
-		System.out.print("please input command:");
+		GLogger.info("Usage : java -server -Xms128m -Xmx384m com.lj.app.core.common.generator.CommandLine -DtemplateRootDir="+getTemplateRootDir());
+		GLogger.info("\tsetTemplate templateDir ");
+		GLogger.info("\tsetPackage basepackage ");
+		GLogger.info("\tprintAllTable tableName ");
+		GLogger.info("\tgen table_name [include_path]: generate files by table_name");
+		GLogger.info("\tdel table_name [include_path]: delete files by table_name");
+		GLogger.info("\tgen * [include_path]: search database all tables and generate files");
+		GLogger.info("\tdel * [include_path]: search database all tables and delete files");
+		GLogger.info("\tquit : quit");
+		GLogger.info("\t[include_path] subdir of templateRootDir,example: 1. dao  2. dao/**,service/**");
+		GLogger.info("\t current templateRootDir:"+getTemplateRootDir());
+		GLogger.info("\t current basepackage:"+getBasepackage());
+		GLogger.info("please input command:");
 	}
 	
 	private static String[] nextArguments(Scanner sc) {
