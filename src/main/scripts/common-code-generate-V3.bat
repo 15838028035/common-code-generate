@@ -11,5 +11,5 @@ cd ..\scripts
 
 echo %LIB_JARS%;
 
-java -Xms512m -Xmx1024m -XX:PermSize=128M -XX:MaxPermSize=256m  -Djava.awt.headless=falsh  -classpath .;%LIB_JARS% com.lj.app.core.common.generator.GeneratorMainFrameV3  
+java -Xms512m -Xmx1024m   -Djava.awt.headless=falsh  -classpath .;%LIB_JARS% com.lj.app.core.common.generator.GeneratorMainFrameV3  
 pause
