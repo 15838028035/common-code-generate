@@ -11,5 +11,5 @@ cd ..\scripts
 
 echo %LIB_JARS%;
 
-java -Xms512m -Xmx1024m   -Djava.awt.headless=falsh  -classpath .;%LIB_JARS% com.lj.app.core.common.generator.GeneratorMainFrame  
+java   -Djava.awt.headless=falsh  -classpath .;%LIB_JARS% com.lj.app.core.common.generator.GeneratorMainFrame  
 pause
