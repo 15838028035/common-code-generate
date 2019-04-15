@@ -15,6 +15,7 @@ import java.util.Vector;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -147,6 +148,12 @@ public class GeneratorMainFrameV3 extends JFrame  {
    * 输出目录
    */
   private String outRootProp;
+  
+  /**
+   * 清空输出目录
+   */
+  private  JCheckBox outRootProCheckBox;
+  
   /**
    * 表名
    */
@@ -283,19 +290,22 @@ public class GeneratorMainFrameV3 extends JFrame  {
     outRootTextField = new JTextField(50);
     outRootTextField.setText(outRootProp);
     add(g, c, outRootTextField, 1, 7, 2, 1);
+    
+    outRootProCheckBox = new JCheckBox("清空输出目录",true);
+    add(g, c, outRootProCheckBox, 1, 8, 2, 1);
 
     table = new JLabel("查询表名：");
-    add(g, c, table, 0, 8, 1, 1);
+    add(g, c, table, 0, 9, 1, 1);
 
     tableTextField = new JTextField(50);
     tableTextField.setText(tableProp);
-    add(g, c, tableTextField, 1, 8, 2, 1);
+    add(g, c, tableTextField, 1, 9, 2, 1);
 
     btnQuery = new JButton("查询");
 
     c.insets = new Insets(8, 10, 4, 0);
 
-    add(g, c, btnQuery, 1, 9, 1, 1);
+    add(g, c, btnQuery, 1, 10, 1, 1);
     
     vName.add("列名");
     vName.add("列类型");
@@ -332,7 +342,7 @@ public class GeneratorMainFrameV3 extends JFrame  {
 
     result = new JTextArea(5, 50);
 
-    add(g, c, result, 0, 1800, 5, 2);
+    add(g, c, new JScrollPane(result), 0, 1800, 10, 2);
 
   }
 
@@ -413,6 +423,9 @@ public class GeneratorMainFrameV3 extends JFrame  {
 				 //查詢到的表列表
 				 List<String> findTableList = new ArrayList<>();
 				 
+				 StringBuilder sb = new StringBuilder();
+				
+				 
 				 // 性能优化，不要再for循环中创建对象
 				 Vector<Object> vTmp = null;
 			      for (int i = 0; i < resultList.size(); i++) {
@@ -420,28 +433,30 @@ public class GeneratorMainFrameV3 extends JFrame  {
 				        
 				        if(StringUtil.isBlank(tableName)) {
 				            findTableList.add(table.getSqlName());
+				            sb.append(table.getRemarks() +"  : " + table.getSqlName()  +"\r\n");
 				        }
 				        
 				        if(StringUtil.isNotBlank(tableName) && table.getSqlName().toUpperCase().contains(tableName.toUpperCase())) {
 				            findTableList.add(table.getSqlName());
+				            sb.append(table.getRemarks() +" :  " + table.getSqlName()  +"\r\n");
 			          }
 			       
 			      }
 			      
 			      if(findTableList.isEmpty()) {
 			    	  JOptionPane.showMessageDialog(null, "对不起，您输入的表名查询不到记录", "提示信息",JOptionPane.ERROR_MESSAGE);
+			    	  result.setText("对不起，您输入的表名查询不到记录");
 					  return ;
 			      }
 			      
 			      if(findTableList !=null && findTableList.size() >1 ) {
-			    	  result.setText("查询到" + findTableList.size() +" 条记录,表信息:"+ StringUtil.toString(findTableList, "\r\n"));
+			    	  result.setText(sb.toString());
 			    	  JOptionPane.showMessageDialog(null, "查询到" + findTableList.size() +" 条记录,请输入表名称进行查询", "提示信息",JOptionPane.ERROR_MESSAGE);
 			    	  return ;
 			      }
 			      
 			      if(findTableList !=null && findTableList.size() ==1 ) {
 			    	  result.setText("查询到" + findTableList.size() +"条记录,表名称:" + findTableList.get(0));
-			    	  GLogger.info("tableName:" + findTableList.get(0));
 			    	  
 			    	  Table queryTable = DbTableFactory.getInstance().releaseConnection().getTable(findTableList.get(0));
 			    	  
@@ -534,7 +549,11 @@ public class GeneratorMainFrameV3 extends JFrame  {
 				GeneratorProperties.setProperty("outRoot", outRootStr);
 				
 				GeneratorProductAndConsumerFacade g = new GeneratorProductAndConsumerFacade();
-				g.clean();
+				
+				//清空输出目录
+				if(outRootProCheckBox.isSelected()) {
+					g.clean();
+				}
 					
 				g.getGenerator().setTemplateRootDir(templateDirStr);
 				

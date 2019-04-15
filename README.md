@@ -17,4 +17,4 @@
     (2)修改src/main/resources/generator.properties地址为127.0.0.1
     (3)修改pom.xml中<version>V1.0.14.20180112-alpha</version>版本信息
     (4)修改src/main/bin/ shutdown.sh、start.sh 文件中的項目版本信息,
-    (5) 执行maven打包命令mvn clean install -Pjar-with-dependencies -X 
+    (5) 执行maven打包命令mvn clean install -P profile1 -X 
