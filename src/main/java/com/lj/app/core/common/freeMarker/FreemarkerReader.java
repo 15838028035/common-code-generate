@@ -27,7 +27,7 @@ public class FreemarkerReader extends Reader {
   /**
    * freemarker模板可以引用的变量
    */
-  private Map<String, Object> variables = new HashMap<String, Object>();
+  private Map<String, Object> variables = new HashMap<>();
 
   public FreemarkerReader(Reader reader) {
     this(reader, Util.newDefaultConfirutaion());

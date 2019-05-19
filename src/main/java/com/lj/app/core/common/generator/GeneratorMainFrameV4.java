@@ -342,7 +342,7 @@ public class GeneratorMainFrameV4 extends JFrame  {
 
     add(g, c, submit, 1, 1600, 1, 1);
 
-    result = new JTextArea(5, 50);
+    result = new JTextArea(10, 95);
 
     add(g, c, new JScrollPane(result), 0, 1800, 10, 2);
 
@@ -551,7 +551,7 @@ public class GeneratorMainFrameV4 extends JFrame  {
 			try {
 				
 				if(StringUtil.isBlank(tableTextField.getText())) {
-			    	  JOptionPane.showMessageDialog(null, "請輸入表名", "提示信息",JOptionPane.ERROR_MESSAGE);
+			    	  JOptionPane.showMessageDialog(null, "请输入表名", "提示信息",JOptionPane.ERROR_MESSAGE);
 					  return ;
 			      }
 				
