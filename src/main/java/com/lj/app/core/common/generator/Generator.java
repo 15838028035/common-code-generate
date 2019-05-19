@@ -503,7 +503,7 @@ public class Generator {
 		} 
   }
 		
-  private String getOutRootDir() {
+  public String getOutRootDir() {
     if (this.outRootDir == null)  {
       throw new IllegalStateException("'outRootDir' property must be not null.");
     }
