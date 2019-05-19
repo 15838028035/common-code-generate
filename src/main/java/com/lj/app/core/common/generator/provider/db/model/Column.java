@@ -28,12 +28,22 @@ public class Column {
   private String javaType;
   
   /**
+   * 列表字段是否显示
+   */
+  private Boolean listIsShow = true;
+  
+  /**
    * 列表查詢類型 = like 
    */
   private String listMatchType = "=";
   
   /**
-   * 列表查詢類型 input textarea select radio  date checkbox file
+   * 表单字段是否显示
+   */
+  private Boolean formIsShow = true;
+  
+  /**
+   * 表单查詢類型 input textarea select radio  date checkbox file
    */
   private String formShowType = "input";
 
@@ -316,5 +326,21 @@ public class Column {
 	public void setListMatchType(String listMatchType) {
 		this.listMatchType = listMatchType;
 	}
+
+  public Boolean getListIsShow() {
+      return listIsShow;
+  }
+
+  public void setListIsShow(Boolean listIsShow) {
+      this.listIsShow = listIsShow;
+  }
+
+  public Boolean getFormIsShow() {
+      return formIsShow;
+  }
+
+  public void setFormIsShow(Boolean formIsShow) {
+      this.formIsShow = formIsShow;
+  }
   
 }

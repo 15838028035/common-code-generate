@@ -94,7 +94,7 @@ public class StringUtil {
    * @throws Exception
    *           异常
    */
-  public static Date strToDate(String dateStr, String dateFormat) throws Exception {
+  public static Date strToDate(String dateStr, String dateFormat){
     return DateUtil.formatDate(dateStr, dateFormat);
   }
 
@@ -211,7 +211,7 @@ public class StringUtil {
     String timeStr = String.valueOf(time);
     Random random = new Random();
     random.setSeed(999L);
-    String randomStr = String.valueOf(Math.abs(random.nextInt()));
+    String randomStr = String.valueOf(Math.abs(random.nextInt())+"");
     return timeStr + randomStr;
   }
 
@@ -257,9 +257,9 @@ public class StringUtil {
   public static boolean isBlank(String str) {
     if (str != null && !str.trim().equals("")) {
       return false;
-    } else {
+    } 
       return true;
-    }
+    
   }
 
   /**
@@ -278,9 +278,8 @@ public class StringUtil {
   public static boolean isNotBlank(String str) {
     if (str != null && !str.trim().equals("")) {
       return true;
-    } else {
-      return false;
     }
+      return false;
   }
 
   /**
@@ -527,15 +526,15 @@ public class StringUtil {
     char[] randomChar = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o',
         'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm' };
     Random random = new Random();
-    StringBuilder StringBuilder = new StringBuilder();
+    StringBuilder stringBuilder = new StringBuilder();
     for (int i = 0; i < length; i++) {
       int r = random.nextInt();
       if (r < 0) {
         continue;
       }
-      StringBuilder.append(randomChar[Math.abs(r) % randomChar.length]);
+      stringBuilder.append(randomChar[Math.abs(r) % randomChar.length]);
     }
-    return StringBuilder.toString();
+    return stringBuilder.toString();
   }
 
   /**
@@ -549,7 +548,7 @@ public class StringUtil {
    * @return 字符串集合
    */
   public static List<String> splitString(String str, int length) {
-    List<String> list = new ArrayList<String>();
+    List<String> list = new ArrayList();
     for (int i = 0; i < str.length(); i += length) {
       int endIndex = i + length;
       if (endIndex <= str.length()) {
@@ -592,7 +591,7 @@ public class StringUtil {
     str = trimBlank(str);
     String[] strArray = str.split(",");
 
-    List<String> strList = new ArrayList<String>();
+    List<String> strList = new ArrayList();
     for (String strObj : strArray) {
       strList.add(strObj);
     }
@@ -1011,9 +1010,7 @@ public class StringUtil {
     }
     Pattern p = Pattern.compile("\\s*|\t|\r|\n");
     Matcher m = p.matcher(srcStr);
-    String after = m.replaceAll("");
-    return after;
-
+    return m.replaceAll("");
   }
 
   /**
@@ -1028,8 +1025,7 @@ public class StringUtil {
     }
     Pattern p = Pattern.compile("\\t|\r|\n");
     Matcher m = p.matcher(srcStr);
-    String after = m.replaceAll("");
-    return after;
+    return  m.replaceAll("");
   }
 
   public static String replaceHtmlEdit(String inputStr) {
@@ -1191,8 +1187,7 @@ public class StringUtil {
       return "";
     }
     try {
-      String flowContentStr = new String(b, "UTF-8");
-      return flowContentStr;
+      return new String(b, "UTF-8");
     } catch (Exception e) {
       e.printStackTrace();
     }
