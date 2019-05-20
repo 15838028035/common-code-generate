@@ -202,7 +202,7 @@ public class GeneratorMainFrameV4 extends JFrame  {
   public GeneratorMainFrameV4(String str) {
     super(str);
 
-    setSize(1200, 900);
+    setSize(1360, 900);
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -325,7 +325,7 @@ public class GeneratorMainFrameV4 extends JFrame  {
      
      jScrollPane.setPreferredSize(new Dimension(1024, 400));
     
-    add(g, c,  jScrollPane, 0, 200, 1000, 400,GridBagConstraints.CENTER);
+    add(g, c,  jScrollPane, 0, 200, 1024, 400,GridBagConstraints.CENTER);
     
     TableColumn column = null;  
     for (int i = 0; i < jTable.getColumnModel().getColumnCount(); i++) {  
