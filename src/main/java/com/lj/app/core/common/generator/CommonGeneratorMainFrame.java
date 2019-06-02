@@ -2,6 +2,7 @@ package com.lj.app.core.common.generator;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.Enumeration;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -12,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 
 /**
  * 
@@ -185,7 +188,7 @@ public abstract class CommonGeneratorMainFrame extends JFrame  {
   public CommonGeneratorMainFrame(String str) {
     super(str);
 
-    setSize(1360, 900);
+    setSize(1200, 1024);
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -272,4 +275,27 @@ public abstract class CommonGeneratorMainFrame extends JFrame  {
     add(jc);
   }
 
+  /**
+   * 表格根据内容自适应列宽
+   * @param myTable
+   */
+  public void FitTableColumns(JTable myTable){
+      JTableHeader header = myTable.getTableHeader();
+         int rowCount = myTable.getRowCount();
+         Enumeration columns = myTable.getColumnModel().getColumns();
+         while(columns.hasMoreElements()){
+             TableColumn column = (TableColumn)columns.nextElement();
+             int col = header.getColumnModel().getColumnIndex(column.getIdentifier());
+             int width = (int)myTable.getTableHeader().getDefaultRenderer()
+                     .getTableCellRendererComponent(myTable, column.getIdentifier()
+                             , false, false, -1, col).getPreferredSize().getWidth();
+             for(int row = 0; row<rowCount; row++){
+                 int preferedWidth = (int)myTable.getCellRenderer(row, col).getTableCellRendererComponent(myTable,
+                   myTable.getValueAt(row, col), false, false, row, col).getPreferredSize().getWidth();
+                 width = Math.max(width, preferedWidth);
+             }
+             header.setResizingColumn(column); // 此行很重要
+             column.setWidth(width+myTable.getIntercellSpacing().width);
+         }
+ }
 }

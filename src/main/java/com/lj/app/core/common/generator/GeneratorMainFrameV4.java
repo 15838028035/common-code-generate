@@ -23,7 +23,6 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 import com.lj.app.core.common.generator.provider.db.DbTableFactory;
 import com.lj.app.core.common.generator.provider.db.model.Column;
@@ -128,21 +127,14 @@ public class GeneratorMainFrameV4 extends CommonGeneratorMainFrame  {
     vName.add("表单类型");
     
      jTable = new JTable(new DefaultTableModel(vData , vName));
-     jTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
      
      jTable.setPreferredScrollableViewportSize(new Dimension(1024, 30));
    
      JScrollPane jScrollPane = new JScrollPane(jTable);
      
-     jScrollPane.setPreferredSize(new Dimension(1024, 400));
+     jScrollPane.setPreferredSize(new Dimension(800, 400));
     
-    add(g, c,  jScrollPane, 0, 200, 1024, 400,GridBagConstraints.CENTER);
-    
-    TableColumn column = null;  
-    for (int i = 0; i < jTable.getColumnModel().getColumnCount(); i++) {  
-        column = jTable.getColumnModel().getColumn(i);  
-        column.setPreferredWidth(130);
-    }  
+    add(g, c,  jScrollPane, 0, 200, 800, 400,GridBagConstraints.CENTER);
     
     jTable.setFillsViewportHeight(true);  
     jTable.updateUI(); 
@@ -153,7 +145,7 @@ public class GeneratorMainFrameV4 extends CommonGeneratorMainFrame  {
 
     add(g, c, submit, 1, 1600, 1, 1);
 
-    result = new JTextArea(10, 90);
+    result = new JTextArea(10, 60);
 
     add(g, c, new JScrollPane(result), 0, 1800, 10, 2);
 
@@ -292,7 +284,7 @@ public class GeneratorMainFrameV4 extends CommonGeneratorMainFrame  {
 				      GLogger.info("开始更新表格数据,.........表格数据条数:" + vData.size());
 				   
 				      jTable.updateUI();
-				      
+				      FitTableColumns(jTable);
 			    	  return ;
 			      }
 
