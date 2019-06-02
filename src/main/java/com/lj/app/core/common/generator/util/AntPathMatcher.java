@@ -262,7 +262,7 @@ public class AntPathMatcher  {
 	}
 
 	public Map<String, String> extractUriTemplateVariables(String pattern, String path) {
-		Map<String, String> variables = new LinkedHashMap<String, String>();
+		Map<String, String> variables = new LinkedHashMap<>();
 		boolean result = doMatch(pattern, path, true, variables);
 		if(!result) throw new IllegalStateException("Pattern \"" + pattern + "\" is not a match for \"" + path + "\"");
 		return variables;

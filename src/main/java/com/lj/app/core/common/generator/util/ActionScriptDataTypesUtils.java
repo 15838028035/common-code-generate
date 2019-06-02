@@ -17,7 +17,7 @@ public class ActionScriptDataTypesUtils {
    * @return 引用类型
    */
   public static String getPreferredAsType(String javaType) {
-    String result = (String) preferredAsTypeForJavaType.get(javaType);
+    String result =  preferredAsTypeForJavaType.get(javaType);
     if (result == null) {
       result = javaType;
     }

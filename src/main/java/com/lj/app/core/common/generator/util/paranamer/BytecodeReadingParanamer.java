@@ -467,16 +467,14 @@ public class BytecodeReadingParanamer implements Paranamer {
      */
     private void accept(final TypeCollector classVisitor) {
       char[] c = new char[maxStringLength]; // buffer used to read strings
-      int i, j, k; // loop variables
-      int u, v, w; // indexes in b
-      String attrName;
-      int anns = 0;
-      int ianns = 0;
+      int i;
+      int j;
+      int u;
+      int v;
       // visits the header
       u = header;
       v = items[readUnsignedShort(u + 4)];
       int len = readUnsignedShort(u + 6);
-      w = 0;
       u += 8;
       for (i = 0; i < len; ++i) {
         u += 2;

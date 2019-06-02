@@ -175,9 +175,7 @@ public class Column {
   }
 
   public String getJdbcSqlTypeName() {
-    String result = JdbcType.getJdbcSqlTypeName(getSqlType());
-
-    return result;
+    return JdbcType.getJdbcSqlTypeName(getSqlType());
   }
 
   public String getColumnAlias() {

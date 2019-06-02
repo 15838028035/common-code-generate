@@ -2,7 +2,6 @@ package com.lj.app.core.common.generator;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,8 +16,6 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -39,160 +36,7 @@ import com.lj.app.core.common.generator.util.StringUtil;
  * 代码生成器Frame
  *
  */
-public class GeneratorMainFrameV3 extends JFrame  {
-
-  /**
-   * jdbc.url
-   */
-  private JLabel jdbcUrl;
-  
-  /**
-   * jdbc.username
-   */
-  private JLabel jdbcUsername;
-  /**
-   * jdbc.password
-   */
-  private JLabel jdbcPassword;
-  
-  /**
-   * 模板目录
-   */
-  private JLabel templateDir;
-  /**
-   * schema
-   */
-  private JLabel schema;
-
-  /**
-   * 包目录
-   * 
-   */
-  private JLabel basepackage;
-
-  /**
-   * 输出目录
-   */
-  private JLabel outRoot;
-
-  /**
-   * 表
-   */
-  private JLabel table;
-
-  /**
-   * jdbcUrl
-   */
-  private JTextField jdbcUrlTextFiled;
-  /**
-   * jdbcUsername
-   */
-  private JTextField jdbcUsernameTextFiled;
-  /**
-   * jdbcPassword
-   */
-  private JTextField jdbcPasswordTextFiled;
-  
-  /**
-   * 模板目录
-   */
-  private JTextField templateDirTextFiled;
-
-  /**
-   * schema
-   */
-  private JTextField schemaTextField;
-
-  /**
-   * 包目录
-   */
-  private JTextField basepackageTextField;
-
-  /**
-   * 输出目录
-   */
-  private JTextField outRootTextField;
-
-  /**
-   * 表
-   */
-  private JTextField tableTextField;
-  
-  /**
-   * jdbc.Url
-   */
-  private String jdbcUrlProp;
-  
-  /**
-   * jdbc.username
-   */
-  private String jdbcUsernameProp;
-  /**
-   * jdbc.password
-   */
-  private String jdbcPasswordProp;
-
-  /**
-   * 模板目录
-   */
-  private String templateDirProp;
-  /**
-   * schema
-   */
-  private String schemaProp;
-  /**
-   * package
-   */
-  private String basepackageProp;
-  /**
-   * 输出目录
-   */
-  private String outRootProp;
-  
-  /**
-   * 清空输出目录
-   */
-  private  JCheckBox outRootProCheckBox;
-  
-  /**
-   * 表名
-   */
-  private String tableProp;
-  
-  /**
-   * 查询
-   */
-  private JButton btnQuery;
-  
-  /**
-   * 表格数据
-   */
-  private JTable   jTable;
-
-  /**
-   * 执行按钮
-   */
-  private JButton submit;
-
-  /**
-   * 执行结果
-   */
-  private JTextArea result;
-  
-  /**
-   * 表格列
-   */
-  private Vector<Object> vData = new Vector();
-  
-  /**
-   * 表格列名称
-   */
-  private Vector<Object> vName = new Vector(); 
-  
-
-  private GridBagLayout g = new GridBagLayout();
-
-  private GridBagConstraints c = new GridBagConstraints();
+public class GeneratorMainFrameV3 extends CommonGeneratorMainFrame  {
 
   /**
    * 
@@ -201,45 +45,12 @@ public class GeneratorMainFrameV3 extends JFrame  {
    */
   public GeneratorMainFrameV3(String str) {
     super(str);
-
-    setSize(1000, 900);
-
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-    setLayout(g);
-
-    getProperties();
-    // 调用方法
-
-    addComponent();
-    
-    btnQuery.addActionListener(new BtnQueryListener());
-
-    submit.addActionListener(new BtnSubmitListener());
-
-    setVisible(true);
-
-    setLocationRelativeTo(null);// 设居中显示;
-
-  }
-
-  /**
-   * 获得配置属性
-   */
-  public void getProperties() {
-    templateDirProp = GeneratorProperties.getProperty("template");
-    schemaProp = GeneratorProperties.getProperty("TABLE_SCHEM");
-    basepackageProp = GeneratorProperties.getProperty("basepackage");
-    outRootProp = GeneratorProperties.getProperty("outRoot");
-    tableProp = GeneratorProperties.getProperty("TABLE_NAME");
-    jdbcUrlProp = GeneratorProperties.getProperty("jdbc.url");
-    jdbcUsernameProp = GeneratorProperties.getProperty("jdbc.username");
-    jdbcPasswordProp = GeneratorProperties.getProperty("jdbc.password");
   }
 
   /**
    * 添加组件
    */
+  @Override
   public void addComponent() {
     
     jdbcUrl = new JLabel("JdbcUrl：");
@@ -347,47 +158,12 @@ public class GeneratorMainFrameV3 extends JFrame  {
   }
 
   /**
-   * 添加布局
-   * @param g 布局
-   * @param c 布局
-   * @param jc 布局
-   * @param x x
-   * @param y y
-   * @param gw 宽度
-   * @param gh 高度
+   * 添加抽象action监听实现
    */
-  public void add(GridBagLayout g, GridBagConstraints c, JComponent jc, int x, int y, int gw, int gh) {
-
-    c.gridx = x;
-    c.gridy = y;
-    c.anchor = GridBagConstraints.WEST;
-    c.gridwidth = gw;
-    c.gridheight = gh;
-
-    g.setConstraints(jc, c);
-    add(jc);
-  }
-  
-  /**
-   * 添加布局
-   * @param g 布局
-   * @param c 布局
-   * @param jc 布局
-   * @param x x
-   * @param y y
-   * @param gw 宽度
-   * @param gh 高度
-   */
-  public void add(GridBagLayout g, GridBagConstraints c, JComponent jc, int x, int y, int gw, int gh, int anchor) {
-
-    c.gridx = x;
-    c.gridy = y;
-    c.anchor = anchor;
-    c.gridwidth = gw;
-    c.gridheight = gh;
-
-    g.setConstraints(jc, c);
-    add(jc);
+  @Override
+  public  void addActionListener(){
+      btnQuery.addActionListener(new BtnQueryListener());
+      submit.addActionListener(new BtnSubmitListener());
   }
 
   /**
@@ -558,7 +334,7 @@ public class GeneratorMainFrameV3 extends JFrame  {
 				g.getGenerator().setTemplateRootDir(templateDirStr);
 				
 				//确保有序
-			 	Set<Column> tableColumSet = new LinkedHashSet(); 
+			 	Set<Column> tableColumSet = new LinkedHashSet<>(); 
 			 
 		  		GeneratorProperties.setProperty("basepackage", basepackageStr);
 		  		GeneratorProperties.setProperty("basepackage_dir",

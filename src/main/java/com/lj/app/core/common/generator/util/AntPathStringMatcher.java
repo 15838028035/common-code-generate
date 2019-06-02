@@ -42,7 +42,7 @@ class AntPathStringMatcher {
 
 	private String str;
 
-	private final List<String> variableNames = new LinkedList<String>();
+	private final List<String> variableNames = new LinkedList<>();
 
 	private final Map<String, String> uriTemplateVariables;
 
