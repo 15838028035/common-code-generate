@@ -2,6 +2,7 @@ package com.lj.app.core.common.generator;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -165,7 +166,7 @@ public class GeneratorProductAndConsumerFacade {
 
   private void generateBy(Generator g, GeneratorModel m, String displayText) throws Exception {
     System.out.println("***************************************************************");
-    System.out.println("* BEGIN generate " + displayText);
+    System.out.println("* BEGIN generate " + displayText + ",时间:" + LocalDateTime.now());
     System.out.println("***************************************************************");
     List<Exception> exceptions = g.generateBy(m.templateModel, m.filePathModel);
     if (exceptions.size() > 0) {
@@ -174,6 +175,8 @@ public class GeneratorProductAndConsumerFacade {
         GLogger.error("[GENERATE ERROR]:",e);
       }
     }
+    
+    System.out.println("* End generate " + displayText + ",时间:" + LocalDateTime.now());
   }
 
   public void clean() throws IOException {
