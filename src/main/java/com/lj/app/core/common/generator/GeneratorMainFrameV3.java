@@ -239,10 +239,9 @@ public class GeneratorMainFrameV3 extends CommonGeneratorMainFrame  {
 			    	  Set<Column> tableColumns = queryTable.getColumns();
 			    	  
 			    	  Iterator<Column> it = tableColumns.iterator();
-			    	  int i = 0;
 			    	  while(it.hasNext()){
-			    		  Column columnObj = (Column)it.next();
-			    		  	vTmp = new Vector();
+			    		  Column columnObj = it.next();
+			    		  	vTmp = new Vector<>();
 				            vTmp.add(columnObj.getSqlName());
 				            vTmp.add(columnObj.getSqlTypeName());
 				            vTmp.add(columnObj.getSize());
@@ -262,12 +261,12 @@ public class GeneratorMainFrameV3 extends CommonGeneratorMainFrame  {
 				            
 				            vData.add(vTmp);
 				            
-				            JComboBox c = new JComboBox();
+				            JComboBox<String> c = new JComboBox<>();
 				            c.addItem("=");
 				             c.addItem("like");
 				            jTable.getColumnModel().getColumn(4) .setCellEditor(new DefaultCellEditor(c));
 				            
-				            JComboBox c2 = new JComboBox();
+				            JComboBox<String> c2 = new JComboBox<>();
 				            c2.addItem("input");
 				            c2.addItem("textarea");
 				            c2.addItem("select");
@@ -277,7 +276,6 @@ public class GeneratorMainFrameV3 extends CommonGeneratorMainFrame  {
 				            c2.addItem("file");
 				            jTable.getColumnModel().getColumn(5) .setCellEditor(new DefaultCellEditor(c2));
 				            
-				            i++;
 			    	  }
 			    	   
 				      GLogger.info("开始更新表格数据,.........表格数据条数:" + vData.size());
@@ -347,7 +345,7 @@ public class GeneratorMainFrameV3 extends CommonGeneratorMainFrame  {
 		    	  Iterator<Column> it = tableColumns.iterator();
 		    	  int i = 0;
 		    	  while(it.hasNext()){
-		    		  	Column columnObj = (Column)it.next();
+		    		  	Column columnObj = it.next();
 		    		  	String listMatchType = (String)jTable.getValueAt(i, 4);
 		    			String formShowType = (String)jTable.getValueAt(i, 5);
 		    		  	

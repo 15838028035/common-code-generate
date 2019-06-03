@@ -115,7 +115,6 @@ public class GeneratorMainFrame extends CommonGeneratorMainFrame {
     @Override
     public void actionPerformed(ActionEvent arg0) {
       String templateDirStr = templateDirTextFiled.getText();
-      String schemaStr = schemaTextField.getText();
       String basepackageStr = basepackageTextField.getText();
       String outRootStr = outRootTextField.getText();
       String tableStr = tableTextField.getText();

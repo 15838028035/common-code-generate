@@ -181,12 +181,12 @@ public abstract class CommonGeneratorMainFrame extends JFrame  {
   /**
    * 表格列
    */
-  protected Vector<Object> vData = new Vector();
+  protected Vector<Object> vData = new Vector<>();
   
   /**
    * 表格列名称
    */
-  protected Vector<Object> vName = new Vector(); 
+  protected Vector<Object> vName = new Vector<>(); 
 
   protected GridBagLayout g = new GridBagLayout();
 

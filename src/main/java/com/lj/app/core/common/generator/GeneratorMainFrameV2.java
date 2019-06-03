@@ -227,10 +227,10 @@ public class GeneratorMainFrameV2 extends CommonGeneratorMainFrame  {
 				 // 性能优化，不要再for循环中创建对象
 				 Vector<Object> vTmp = null;
 			      for (int i = 0; i < result.size(); i++) {
-				        Table table = (Table) result.get(i);
+				        Table table =  result.get(i);
 				        
 				        if(StringUtil.isBlank(tableName)) {
-				  	         vTmp = new Vector();
+				  	         vTmp = new Vector<>();
 				  	        vTmp.add(i+1);
 				            vTmp.add(i+1);
 				            vTmp.add(table.getSqlName());
@@ -242,7 +242,7 @@ public class GeneratorMainFrameV2 extends CommonGeneratorMainFrame  {
 				        }
 				        
 				        if(StringUtil.isNotBlank(tableName) && table.getSqlName().toUpperCase().contains(tableName.toUpperCase())) {
-				             vTmp = new Vector();
+				             vTmp = new Vector<>();
 				             vTmp.add(i+1);
 				             vTmp.add(i+1);
 				            vTmp.add(table.getSqlName());

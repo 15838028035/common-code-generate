@@ -207,9 +207,6 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 		      //清空容器
 			 vData.clear();
 			 
-			 StringBuilder sb = new StringBuilder();
-			
-			 
 			 // 性能优化，不要再for循环中创建对象
 			 Vector<Object> vTmp = null;
 		    	  
@@ -220,8 +217,8 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 		    	  Iterator<Column> it = tableColumns.iterator();
 		    	  
 		    	  while(it.hasNext()){
-		    		  Column columnObj = (Column)it.next();
-		    		  	vTmp = new Vector();
+		    		  Column columnObj = it.next();
+		    		  	vTmp = new Vector<>();
 			            vTmp.add(columnObj.getSqlName());
 			            vTmp.add(columnObj.getSqlTypeName());
 			            vTmp.add(columnObj.getSize());
@@ -237,7 +234,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 			            	vTmp.add("=");
 			            }
 			            
-			            JComboBox c = new JComboBox();
+			            JComboBox<String> c = new JComboBox<>();
                 c.addItem("=");
                  c.addItem("like");
                 jTable.getColumnModel().getColumn(5) .setCellEditor(new DefaultCellEditor(c));
@@ -253,7 +250,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 			            }
 			            
 			            
-			     JComboBox c2 = new JComboBox();
+			            JComboBox<String> c2 = new JComboBox<>();
                 c2.addItem("input");
                 c2.addItem("textarea");
                 c2.addItem("select");
@@ -378,7 +375,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 		    	  Iterator<Column> it = tableColumns.iterator();
 		    	  int i = 0;
 		    	  while(it.hasNext()){
-		    		  	Column columnObj = (Column)it.next();
+		    		  	Column columnObj = it.next();
 		    		  	Boolean listIsShow = (Boolean)jTable.getValueAt(i, 4);
 		    		  	String  listMatchType = (String)jTable.getValueAt(i, 5);
 		    		  	Boolean formIsShow = (Boolean)jTable.getValueAt(i, 6);
