@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  * 
@@ -173,6 +174,11 @@ public abstract class CommonGeneratorMainFrame extends JFrame  {
   protected JTree jTree;
   
   /**
+   * 树形
+   */
+  protected DefaultMutableTreeNode root = new DefaultMutableTreeNode("ROOT");
+  
+  /**
    * 表格列
    */
   protected Vector<Object> vData = new Vector();
@@ -186,15 +192,42 @@ public abstract class CommonGeneratorMainFrame extends JFrame  {
 
   protected GridBagConstraints c = new GridBagConstraints();
 
+  
   /**
    * 
    * 代码生成器Frame
    *
    */
   public CommonGeneratorMainFrame(String str) {
+	  	super(str);
+
+	    setSize(1200, 1024);
+
+	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	    setLayout(g);
+
+	    getProperties();
+	    // 调用方法
+
+	    addComponent();
+
+	    addActionListener();
+
+	    setVisible(true);
+
+	    setLocationRelativeTo(null);// 设居中显示;
+  }
+  
+  /**
+   * 
+   * 代码生成器Frame
+   *
+   */
+  public CommonGeneratorMainFrame(String str , int width,int height) {
     super(str);
 
-    setSize(1200, 1024);
+    setSize(width, height);
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -212,6 +245,7 @@ public abstract class CommonGeneratorMainFrame extends JFrame  {
     setLocationRelativeTo(null);// 设居中显示;
 
   }
+
 
   /**
    * 获得配置属性
