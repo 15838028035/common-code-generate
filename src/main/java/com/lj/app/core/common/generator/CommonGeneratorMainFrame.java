@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTree;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
@@ -165,6 +166,11 @@ public abstract class CommonGeneratorMainFrame extends JFrame  {
    * 表格数据
    */
   protected JTable   jTable;
+  
+  /**
+   * 表格数据树形展示
+   */
+  protected JTree jTree;
   
   /**
    * 表格列
