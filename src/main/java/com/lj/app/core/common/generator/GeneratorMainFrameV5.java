@@ -47,7 +47,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
    *
    */
   public GeneratorMainFrameV5(String str) {
-      super(str,1200,1200);
+      super(str,1360,1200);
   }
 
   /**
@@ -130,7 +130,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
    
      JScrollPane jScrollPane = new JScrollPane(jTable);
      
-     jScrollPane.setPreferredSize(new Dimension(500, 600));
+     jScrollPane.setPreferredSize(new Dimension(600, 600));
     
     add(g, c,  jScrollPane, 3, 200, 1000, 600,GridBagConstraints.WEST);
     
