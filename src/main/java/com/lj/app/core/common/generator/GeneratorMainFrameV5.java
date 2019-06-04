@@ -1,8 +1,6 @@
 package com.lj.app.core.common.generator;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -115,6 +114,15 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 
     add(g, c, btnQuery, 1, 10, 1, 1);
     
+    DefaultTreeModel treeModelPointed = new DefaultTreeModel(root);//利用根节点创建树模型，并采用非默认的判断方式
+	 jTree = new javax.swing.JTree(treeModelPointed);
+	 
+	 JScrollPane jTreePane = new JScrollPane(jTree);
+    jTreePane.setPreferredSize(new Dimension(200, 600));
+    
+   add(g, c, jTreePane, 1, 11, 200, 600);
+   
+   
     vName.add("列名");
     vName.add("列类型");
     vName.add("长度");
@@ -126,27 +134,17 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
     
      jTable = new JTable(new DefaultTableModel(vData , vName));
      
-     jTable.setPreferredScrollableViewportSize(new Dimension(900, 30));
+     jTable.setPreferredScrollableViewportSize(new Dimension(1000, 30));
    
      JScrollPane jScrollPane = new JScrollPane(jTable);
      
      jScrollPane.setPreferredSize(new Dimension(600, 600));
-    
-    add(g, c,  jScrollPane, 3, 200, 1000, 600,GridBagConstraints.WEST);
+     
+     
+    add(g, c,  jScrollPane, 2, 11, 600, 600);
     
     jTable.setFillsViewportHeight(true);  
     jTable.updateUI(); 
-
-	    
-	DefaultTreeModel treeModelPointed = new DefaultTreeModel(root);//利用根节点创建树模型，并采用非默认的判断方式
-	 jTree = new javax.swing.JTree(treeModelPointed);
-	 
-	 JScrollPane jTreePane = new JScrollPane(jTree);
-     jTreePane.setPreferredSize(new Dimension(200, 600));
-     jTreePane.setBackground(Color.BLUE);
-     jTreePane.setForeground(Color.green);
-	 
-    add(g, c, jTreePane, 0, 250, 200, 600,GridBagConstraints.WEST);
     
     
     submit = new JButton("生成");
@@ -196,6 +194,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 		
 		long startTime = System.currentTimeMillis();
 
+		Table queryTable = null;
 		try {
 
 			GeneratorProperties.setProperty("jdbc.url", jdbcUrl);
@@ -210,7 +209,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 			 // 性能优化，不要再for循环中创建对象
 			 Vector<Object> vTmp = null;
 		    	  
-		    	  Table queryTable = DbTableFactory.getInstance().releaseConnection().getTable(tableName);
+		    	   queryTable = DbTableFactory.getInstance().releaseConnection().getTable(tableName);
 		    	  
 		    	  Set<Column> tableColumns = queryTable.getColumns();
 		    	  
@@ -267,6 +266,8 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 			   
 			      jTable.updateUI();
 			      FitTableColumns(jTable);
+			      
+			      retMsg="查询表名称:" +queryTable.getSqlName() + "\r\n 表备注:" +queryTable.getRemarks() +"\r\n";
 
 		} catch (Exception ex) {
 			retMsg = "查询数据库出现异常" + outRootStr + ",异常信息:" + ex.getMessage();
@@ -277,7 +278,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 		long endTime = System.currentTimeMillis();
 		String executeTime = "查询时间:" +( endTime-startTime) +"ms \r\n";
 		
-		result.setText(executeTime + retMsg);
+		result.setText(retMsg + executeTime);
 	}
 	  
   }
@@ -342,11 +343,26 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 
 			String retMsg = "文件生成成功,文件目录:\n" + outRootStr;
 			long startTime = System.currentTimeMillis();
-
+			
+			//生成表名称
+			 String genTableName ="";
 			try {
 				
-				  DefaultMutableTreeNode note=(DefaultMutableTreeNode) jTree.getLastSelectedPathComponent(); //返回最后选中的结点        
-			        String name=note.toString();//获得这个结点的名称
+				  DefaultMutableTreeNode note=(DefaultMutableTreeNode) jTree.getLastSelectedPathComponent(); //返回最后选中的结点       
+				  
+				  if(note == null) {
+					  JOptionPane.showMessageDialog(null, "对不起，请点击选中左侧树中的节点", "提示信息",JOptionPane.ERROR_MESSAGE);
+			    	  result.setText("对不起，请点击选中左侧树中的节点");
+					  return ;
+				  }
+				  
+				  genTableName=note.toString();//获得这个结点的名称
+			     
+			     if("ROOT".equalsIgnoreCase(genTableName)) {
+			    	  JOptionPane.showMessageDialog(null, "对不起，请不要选择ROOT节点进行生成", "提示信息",JOptionPane.ERROR_MESSAGE);
+			    	  result.setText("对不起，请不要选择ROOT节点进行生成");
+					  return ;
+			     }
 				
 				result.setText("正在执行中，请稍等.....");
 				
@@ -368,7 +384,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 		  		GeneratorProperties.setProperty("basepackage_dir",
                 GeneratorProperties.getProperty("basepackage").replace(".", "/"));
 			      
-			    Table table = DbTableFactory.getInstance().getTable(name);
+			    Table table = DbTableFactory.getInstance().getTable(genTableName);
 			      
 			     Set<Column> tableColumns = table.getColumns();
 		    	  
@@ -407,7 +423,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 			GLogger.info("***************************************************************");
 
 			long endTime = System.currentTimeMillis();
-			String executeTime = "生成表个数:" + jTable.getSelectedRows().length + "\r \n 执行时间:" +( endTime-startTime) +"ms \r\n";
+			String executeTime = "生成表个数:1" + "\r\n 生成表名称:"+  genTableName +"\r \n 执行时间:" +( endTime-startTime) +"ms \r\n";
 			
 			result.setText(executeTime + retMsg);
 
