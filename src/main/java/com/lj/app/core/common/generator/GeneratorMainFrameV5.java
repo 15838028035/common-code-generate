@@ -138,10 +138,10 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
    
      JScrollPane jScrollPane = new JScrollPane(jTable);
      
-     jScrollPane.setPreferredSize(new Dimension(600, 600));
+     jScrollPane.setPreferredSize(new Dimension(700, 600));
      
      
-    add(g, c,  jScrollPane, 2, 11, 600, 600);
+    add(g, c,  jScrollPane, 2, 11, 700, 600);
     
     jTable.setFillsViewportHeight(true);  
     jTable.updateUI(); 
