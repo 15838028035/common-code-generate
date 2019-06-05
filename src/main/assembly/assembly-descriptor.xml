@@ -21,11 +21,6 @@
 	<includeBaseDirectory>true</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
-			<directory>${project.build.directory}/classes/com/lj/app/core/common/generator</directory>
-			<outputDirectory>/com/lj/app/core/common/generator</outputDirectory>
-			<fileMode>0755</fileMode>
-		</fileSet>
-		<fileSet>
             <directory>${project.basedir}/src/main/resources</directory>
             <outputDirectory>scripts</outputDirectory>
             <fileMode>0755</fileMode>
