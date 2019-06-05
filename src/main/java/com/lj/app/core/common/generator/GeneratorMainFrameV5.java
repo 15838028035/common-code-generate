@@ -1,13 +1,16 @@
 package com.lj.app.core.common.generator;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.swing.DefaultCellEditor;
@@ -16,15 +19,19 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 import com.lj.app.core.common.generator.provider.db.DbTableFactory;
 import com.lj.app.core.common.generator.provider.db.model.Column;
@@ -46,7 +53,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
    *
    */
   public GeneratorMainFrameV5(String str) {
-      super(str,1360,1200);
+      super(str,1240,1200);
   }
 
   /**
@@ -116,12 +123,10 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
     
     DefaultTreeModel treeModelPointed = new DefaultTreeModel(root);//利用根节点创建树模型，并采用非默认的判断方式
 	 jTree = new javax.swing.JTree(treeModelPointed);
+	 jTree.setForeground(Color.red);
 	 
 	 JScrollPane jTreePane = new JScrollPane(jTree);
-    jTreePane.setPreferredSize(new Dimension(200, 600));
-    
-   add(g, c, jTreePane, 1, 11, 200, 600);
-   
+   jTreePane.setPreferredSize(new Dimension(200, 600));
    
     vName.add("列名");
     vName.add("列类型");
@@ -131,17 +136,21 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
     vName.add("列表查询类型");
     vName.add("表单是否显示");
     vName.add("表单类型");
+    vName.add("排序编号");
     
      jTable = new JTable(new DefaultTableModel(vData , vName));
      
-     jTable.setPreferredScrollableViewportSize(new Dimension(1000, 30));
+     jTable.setPreferredScrollableViewportSize(new Dimension(700, 600));
    
      JScrollPane jScrollPane = new JScrollPane(jTable);
      
      jScrollPane.setPreferredSize(new Dimension(700, 600));
      
+     JPanel jpanel = new JPanel();
+     jpanel.add(jTreePane);
+     jpanel.add(jScrollPane);
      
-    add(g, c,  jScrollPane, 2, 11, 700, 600);
+    add(g, c,  jpanel, 1, 11, 1000, 600);
     
     jTable.setFillsViewportHeight(true);  
     jTable.updateUI(); 
@@ -215,6 +224,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 		    	  
 		    	  Iterator<Column> it = tableColumns.iterator();
 		    	  
+		    	  int i=0;
 		    	  while(it.hasNext()){
 		    		  Column columnObj = it.next();
 		    		  	vTmp = new Vector<>();
@@ -259,7 +269,10 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
                 c2.addItem("file");
                 jTable.getColumnModel().getColumn(7) .setCellEditor(new DefaultCellEditor(c2));
                 
+                vTmp.add(i+1);
+                
 			            vData.add(vTmp);
+			            i++;
 		    	  }
 		    	   
 			      GLogger.info("开始更新表格数据,.........表格数据条数:" + vData.size());
@@ -314,7 +327,9 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 				        root.add(treeNode);
 			      }
 			    
-			      
+			    
+			      //查询后，默认展开树
+			     expandTree(jTree);
 		      GLogger.info("开始更新表格数据,.........表格数据条数:" + resultList.size());
 		      jTree.updateUI(); //刷新jTree结构
 
@@ -401,12 +416,17 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 		    		  	columnObj.setListMatchType(listMatchType);
 		    		    columnObj.setFormIsShow(formIsShow);
 		    		  	columnObj.setFormShowType(formShowType);
+		    		  	columnObj.setSortNo(Integer.valueOf(jTable.getValueAt(i, 8).toString()));
 		    		  	tableColumSet.add(columnObj);
 		    		  	
 			            i++;
 		    	  }
 			      
-			      table.setColumns(tableColumSet);
+		    	  //排序
+		          Set<Column> sortSet = new TreeSet<Column>((o1, o2) -> o1.getSortNo().compareTo(o2.getSortNo()));
+		          sortSet.addAll(tableColumns);
+		          
+			      table.setColumns(sortSet);
 			      
 			      g.generateByTable(g.createGeneratorForDbTable(), table);
 				      
@@ -429,6 +449,30 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 
 		}
 	}
+	
+	/**
+	 * 展开树
+	 * @param tree 树节点
+	 */
+	public static void expandTree(JTree tree) {
+        TreeNode root = (TreeNode) tree.getModel().getRoot();
+        expandTree(tree, new TreePath(root));
+    }
+ 
+    public static void expandTree(JTree tree, TreePath path) {
+        TreeNode node = (TreeNode) path.getLastPathComponent();
+        if (node.getChildCount() > 0) {
+            Enumeration<TreeNode> children = node.children();
+ 
+            while (children.hasMoreElements()) {
+                TreeNode n = children.nextElement();
+                TreePath newPath = path.pathByAddingChild(n);
+                expandTree(tree, newPath);
+            }
+        }
+ 
+        tree.expandPath(path);
+    }
 	
   /**
    * 执行方法

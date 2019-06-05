@@ -46,6 +46,11 @@ public class Column {
    * 表单查詢類型 input textarea select radio  date checkbox file
    */
   private String formShowType = "input";
+  
+	/**
+	 * 排序编号
+	 */
+	private Integer sortNo;
 
   public Column(Table table, int sqlType, String sqlTypeName, String sqlName, int size, int decimalDigits, boolean isPk,
       boolean isFk, String fkTableName, boolean isNullable, boolean isIndexed, boolean isUnique, String defaultValue,
@@ -340,5 +345,13 @@ public class Column {
   public void setFormIsShow(Boolean formIsShow) {
       this.formIsShow = formIsShow;
   }
+
+	public Integer getSortNo() {
+		return sortNo;
+	}
+	
+	public void setSortNo(Integer sortNo) {
+		this.sortNo = sortNo;
+	}
   
 }

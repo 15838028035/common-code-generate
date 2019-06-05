@@ -176,7 +176,7 @@ public abstract class CommonGeneratorMainFrame extends JFrame  {
   /**
    * 树形
    */
-  protected DefaultMutableTreeNode root = new DefaultMutableTreeNode("ROOT");
+  protected DefaultMutableTreeNode root = new DefaultMutableTreeNode("ROOT",true);
   
   /**
    * 表格列
