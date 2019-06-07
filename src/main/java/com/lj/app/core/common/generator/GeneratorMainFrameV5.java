@@ -53,7 +53,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
    *
    */
   public GeneratorMainFrameV5(String str) {
-      super(str,1240,1200);
+      super(str,1240,1024);
   }
 
   /**
@@ -126,7 +126,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 	 jTree.setForeground(Color.red);
 	 
 	 JScrollPane jTreePane = new JScrollPane(jTree);
-   jTreePane.setPreferredSize(new Dimension(200, 600));
+   jTreePane.setPreferredSize(new Dimension(200, 512));
    
     vName.add("列名");
     vName.add("列类型");
@@ -140,17 +140,17 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
     
      jTable = new JTable(new DefaultTableModel(vData , vName));
      
-     jTable.setPreferredScrollableViewportSize(new Dimension(700, 600));
+     jTable.setPreferredScrollableViewportSize(new Dimension(700, 512));
    
      JScrollPane jScrollPane = new JScrollPane(jTable);
      
-     jScrollPane.setPreferredSize(new Dimension(700, 600));
+     jScrollPane.setPreferredSize(new Dimension(700, 512));
      
      JPanel jpanel = new JPanel();
      jpanel.add(jTreePane);
      jpanel.add(jScrollPane);
      
-    add(g, c,  jpanel, 1, 11, 1000, 600);
+    add(g, c,  jpanel, 1, 11, 800, 512);
     
     jTable.setFillsViewportHeight(true);  
     jTable.updateUI(); 
@@ -160,11 +160,11 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 
     c.insets = new Insets(8, 2, 4, 0);
 
-    add(g, c, submit, 1, 1600, 1, 1);
+    add(g, c, submit, 1, 9000, 1, 1);
 
-    result = new JTextArea(10, 60);
+    result = new JTextArea(5, 60);
 
-    add(g, c, new JScrollPane(result), 0, 1800, 10, 2);
+    add(g, c, new JScrollPane(result), 0, 1000, 10, 2);
         
 
   }
