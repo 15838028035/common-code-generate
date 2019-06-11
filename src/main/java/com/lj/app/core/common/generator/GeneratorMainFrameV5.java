@@ -336,11 +336,11 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 				result.setText("正在查询中，请稍等.....");
 				 List<Table> resultList = DbTableFactory.getInstance().releaseConnection().getAllTables();
 				 root.removeAllChildren();
-			      for (Table tableTmp: resultList) {
-				        DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(tableTmp.getSqlName(),true);
-				        root.add(treeNode);
-			      }
 			    
+			      resultList.iterator().forEachRemaining(tableTmp -> {
+			    	  DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(tableTmp.getSqlName(),true);
+			        root.add(treeNode);
+			      });
 			    
 			      //查询后，默认展开树
 			     expandTree(jTree);
