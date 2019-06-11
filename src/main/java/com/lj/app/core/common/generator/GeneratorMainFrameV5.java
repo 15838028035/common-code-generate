@@ -204,11 +204,22 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 		long startTime = System.currentTimeMillis();
 
 		Table queryTable = null;
+		//是否需要重新连接
+		Boolean releaseConnection= false;
 		try {
 
-			GeneratorProperties.setProperty("jdbc.url", jdbcUrl);
-			GeneratorProperties.setProperty("jdbc.username", jdbcUsername);
-			GeneratorProperties.setProperty("jdbc.password", jdbcPasswordText);
+			if(!jdbcUrl.equalsIgnoreCase(GeneratorProperties.getProperty("jdbc.url"))) {
+				GeneratorProperties.setProperty("jdbc.url", jdbcUrl);
+				releaseConnection = true;
+			}
+			if(!jdbcUsername.equalsIgnoreCase(GeneratorProperties.getProperty("jdbc.username"))) {
+				GeneratorProperties.setProperty("jdbc.username", jdbcUsername);
+				releaseConnection = true;
+			}
+			if(!jdbcPasswordText.equalsIgnoreCase(GeneratorProperties.getProperty("jdbc.password"))) {
+				GeneratorProperties.setProperty("jdbc.password", jdbcPasswordText);
+				releaseConnection = true;
+			}
 			
 			result.setText("正在查询中，请稍等.....");
 			
@@ -218,8 +229,11 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 			 // 性能优化，不要再for循环中创建对象
 			 Vector<Object> vTmp = null;
 		    	  
+			 if(releaseConnection) {
 		    	   queryTable = DbTableFactory.getInstance().releaseConnection().getTable(tableName);
-		    	  
+			 }else {
+				 queryTable = DbTableFactory.getInstance().getTable(tableName);
+			 }
 		    	  Set<Column> tableColumns = queryTable.getColumns();
 		    	  
 		    	  Iterator<Column> it = tableColumns.iterator();
