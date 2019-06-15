@@ -28,9 +28,14 @@ public class Column {
   private String javaType;
   
   /**
-   * 列表字段是否显示
+   * 列表查询字段是否显示
    */
   private Boolean listIsShow = true;
+  
+  /**
+   * 列表列是否显示
+   */
+  private Boolean listColumnIsShow = true;
   
   /**
    * 列表查詢類型 = like 
@@ -353,5 +358,13 @@ public class Column {
 	public void setSortNo(Integer sortNo) {
 		this.sortNo = sortNo;
 	}
+
+  public Boolean getListColumnIsShow() {
+      return listColumnIsShow;
+  }
+
+  public void setListColumnIsShow(Boolean listColumnIsShow) {
+      this.listColumnIsShow = listColumnIsShow;
+  }
   
 }

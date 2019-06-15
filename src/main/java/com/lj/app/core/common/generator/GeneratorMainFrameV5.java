@@ -132,7 +132,8 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
     vName.add("列类型");
     vName.add("长度");
     vName.add("备注");
-    vName.add("列表是否显示");
+    vName.add("列表查询是否显示");
+    vName.add("列表列是否显示");
     vName.add("列表查询类型");
     vName.add("表单是否显示");
     vName.add("表单类型");
@@ -247,9 +248,14 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 			            vTmp.add(columnObj.getSize());
 			            vTmp.add(columnObj.getRemarks());
 			            
-			            vTmp.add(true);//列是否显示
+			            vTmp.add(true);//列查询是否显示
+			           
 			            jTable.getColumnModel().getColumn(4).setCellEditor(jTable.getDefaultEditor(Boolean.class));
 			            jTable.getColumnModel().getColumn(4).setCellRenderer(jTable.getDefaultRenderer(Boolean.class));
+			            
+			            vTmp.add(true);//列是否显示
+			            jTable.getColumnModel().getColumn(5).setCellEditor(jTable.getDefaultEditor(Boolean.class));
+                  jTable.getColumnModel().getColumn(5).setCellRenderer(jTable.getDefaultRenderer(Boolean.class));
 			            
 			            if(columnObj.getIsStringColumn()){
 			            	vTmp.add("like");
@@ -260,11 +266,11 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 			            JComboBox<String> c = new JComboBox<>();
                 c.addItem("=");
                  c.addItem("like");
-                jTable.getColumnModel().getColumn(5) .setCellEditor(new DefaultCellEditor(c));
+                jTable.getColumnModel().getColumn(6) .setCellEditor(new DefaultCellEditor(c));
                 
 			            vTmp.add(true);
-			            jTable.getColumnModel().getColumn(6).setCellEditor(jTable.getDefaultEditor(Boolean.class));
-                jTable.getColumnModel().getColumn(6).setCellRenderer(jTable.getDefaultRenderer(Boolean.class));
+			            jTable.getColumnModel().getColumn(7).setCellEditor(jTable.getDefaultEditor(Boolean.class));
+                jTable.getColumnModel().getColumn(7).setCellRenderer(jTable.getDefaultRenderer(Boolean.class));
 			            
 			            if(columnObj.getIsDateTimeColumn()){
 			            	vTmp.add("date");
@@ -281,7 +287,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
                 c2.addItem("date");
                 c2.addItem("checkbox");
                 c2.addItem("file");
-                jTable.getColumnModel().getColumn(7) .setCellEditor(new DefaultCellEditor(c2));
+                jTable.getColumnModel().getColumn(8) .setCellEditor(new DefaultCellEditor(c2));
                 
                 vTmp.add(i+1);
                 
@@ -422,15 +428,18 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 		    	  while(it.hasNext()){
 		    		  	Column columnObj = it.next();
 		    		  	Boolean listIsShow = (Boolean)jTable.getValueAt(i, 4);
-		    		  	String  listMatchType = (String)jTable.getValueAt(i, 5);
-		    		  	Boolean formIsShow = (Boolean)jTable.getValueAt(i, 6);
-		    		  	String formShowType = (String)jTable.getValueAt(i, 7);
+		    		  	Boolean listColumnIsShow = (Boolean)jTable.getValueAt(i,5);
+		    		  	String  listMatchType = (String)jTable.getValueAt(i, 6);
+		    		  	Boolean formIsShow = (Boolean)jTable.getValueAt(i, 7);
+		    		  	String formShowType = (String)jTable.getValueAt(i, 8);
 		    		  	
-		    			columnObj.setListIsShow(listIsShow);
+		    		  	columnObj.setListIsShow(listIsShow);
+		    		  	
+		    		  	columnObj.setListColumnIsShow(listColumnIsShow);
 		    		  	columnObj.setListMatchType(listMatchType);
 		    		    columnObj.setFormIsShow(formIsShow);
 		    		  	columnObj.setFormShowType(formShowType);
-		    		  	columnObj.setSortNo(Integer.valueOf(jTable.getValueAt(i, 8).toString()));
+		    		  	columnObj.setSortNo(Integer.valueOf(jTable.getValueAt(i, 9).toString()));
 		    		  	tableColumSet.add(columnObj);
 		    		  	
 			            i++;
