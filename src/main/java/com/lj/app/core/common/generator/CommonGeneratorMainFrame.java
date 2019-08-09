@@ -58,6 +58,12 @@ public abstract class CommonGeneratorMainFrame extends JFrame  {
    * 
    */
   protected JLabel basepackage;
+  
+  /**
+   * 模块名称
+   * 
+   */
+  protected JLabel modelName;
 
   /**
    * 输出目录
@@ -96,6 +102,11 @@ public abstract class CommonGeneratorMainFrame extends JFrame  {
    * 包目录
    */
   protected JTextField basepackageTextField;
+  
+  /**
+   * 模块名称
+   */
+  protected JTextField modelNameTextField;
 
   /**
    * 输出目录
@@ -133,6 +144,11 @@ public abstract class CommonGeneratorMainFrame extends JFrame  {
    * package
    */
   protected String basepackageProp;
+  
+  /**
+   * 模块名称
+   */
+  protected String modelNameProp;
   /**
    * 输出目录
    */

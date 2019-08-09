@@ -104,16 +104,23 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
     basepackageTextField = new JTextField(50);
     basepackageTextField.setText(basepackageProp);
     add(g, c, basepackageTextField, 1, 6, 2, 1);
+    
+    modelName = new JLabel("模块名称：");
+    add(g, c, modelName, 0, 7, 1, 1);
+
+    modelNameTextField = new JTextField(50);
+    modelNameTextField.setText(modelNameProp);
+    add(g, c, modelNameTextField, 1, 7, 2, 1);
 
     outRoot = new JLabel("输出目录：");
-    add(g, c, outRoot, 0, 7, 1, 1);
+    add(g, c, outRoot, 0, 8, 1, 1);
 
     outRootTextField = new JTextField(50);
     outRootTextField.setText(outRootProp);
-    add(g, c, outRootTextField, 1, 7, 2, 1);
+    add(g, c, outRootTextField, 1, 8, 2, 1);
     
     outRootProCheckBox = new JCheckBox("清空输出目录",true);
-    add(g, c, outRootProCheckBox, 1, 8, 2, 1);
+    add(g, c, outRootProCheckBox, 1, 9, 2, 1);
     
     btnQuery = new JButton("查询");
 
@@ -372,6 +379,8 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 		public void actionPerformed(ActionEvent arg0) {
 			String templateDirStr = templateDirTextFiled.getText();
 			String basepackageStr = basepackageTextField.getText();
+			//模块名称
+			String modelNameStr = modelNameTextField.getText();
 			String outRootStr = outRootTextField.getText();
 
 			GLogger.info("templateDirStr:" + templateDirStr);
@@ -418,6 +427,8 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 		  		GeneratorProperties.setProperty("basepackage", basepackageStr);
 		  		GeneratorProperties.setProperty("basepackage_dir",
                 GeneratorProperties.getProperty("basepackage").replace(".", "/"));
+		  		
+		  		GeneratorProperties.setProperty("modelName", modelNameStr);
 			      
 			    Table table = DbTableFactory.getInstance().getTable(genTableName);
 			      
