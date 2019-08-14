@@ -148,7 +148,8 @@ public class GeneratorMainFrame extends CommonGeneratorMainFrame {
         tableViewData.setTableName(tableStr);
         tableViewData.setBasepackage(basepackageStr);
         
-        g.generateByTable(tableViewData);
+        g.add(tableViewData);
+        g.consumerTable();
   
         Runtime.getRuntime().exec("cmd.exe /c start " + outRootStr);
       } catch (Exception e) {

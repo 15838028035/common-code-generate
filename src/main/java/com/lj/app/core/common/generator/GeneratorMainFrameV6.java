@@ -480,7 +480,7 @@ public class GeneratorMainFrameV6 extends CommonGeneratorMainFrame  {
 		          
 			      table.setColumns(sortSet);
 			      
-			      g.generateByTable(g.createGeneratorForDbTable(), table);
+			      g.generateByTable(g.createGeneratorForDbTable(), table, 1,1);
 				      
 				Runtime.getRuntime().exec("cmd.exe /c start " + outRootStr);
 			} catch (Exception e) {

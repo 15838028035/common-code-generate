@@ -339,10 +339,9 @@ public class GeneratorMainFrameV2 extends CommonGeneratorMainFrame  {
 			                 return dableViewData2.getSortNo().compareTo(dableViewData1.getSortNo());
 			            }
 			         });
-			 
-				 for(TableViewData  tableViewDataObj:tableViewDataList){
-						g.generateByTable(tableViewDataObj);
-				 }
+
+			        g.add(tableViewDataList);
+			        g.consumerTable();
 
 				Runtime.getRuntime().exec("cmd.exe /c start " + outRootStr);
 			} catch (Exception e) {

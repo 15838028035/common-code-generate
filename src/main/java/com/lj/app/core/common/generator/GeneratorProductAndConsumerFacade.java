@@ -103,9 +103,19 @@ public class GeneratorProductAndConsumerFacade {
    * @param tableName 表名称
    * @throws Exception  异常
    */
-  public void generateByTable(TableViewData tableViewData) throws Exception {
-     blockingQueue.add(tableViewData);
+  public void add(TableViewData tableViewData) throws Exception {
     consumerTable();
+  }
+  
+  /**
+   * 根据表名称生成代码
+   * @param tableName 表名称
+   * @throws Exception  异常
+   */
+  public void add(List<TableViewData> list) throws Exception {
+	  for(TableViewData  tableViewDataObj:list){
+		  blockingQueue.add(tableViewDataObj);
+	 }
   }
   
   /**
@@ -126,7 +136,7 @@ public class GeneratorProductAndConsumerFacade {
 
 	      
 	      Table table = DbTableFactory.getInstance().getTable(tableViewData.getTableName());
-	      generateByTable(g, table);
+	      generateByTable(g, table,1, blockingQueue.size()+1);
 	  }
     
   }
@@ -142,6 +152,18 @@ public class GeneratorProductAndConsumerFacade {
     GeneratorModel m = GeneratorModel.newFromTable(table);
     String displayText = table.getSqlName() + " => " + table.getClassName();
     generateBy(g, m, displayText);
+  }
+  
+  /**
+   * 根据表名称生成代码
+   * @param g 生成对象
+   * @param table 表名称
+   * @throws Exception  异常
+   */
+  public void generateByTable(Generator g, Table table, Integer a, Integer b) throws Exception {
+    GeneratorModel m = GeneratorModel.newFromTable(table);
+    String displayText = table.getSqlName() + " => " + table.getClassName();
+    generateBy(g, m, displayText,a,b);
   }
 
   /**
@@ -164,6 +186,21 @@ public class GeneratorProductAndConsumerFacade {
     generateBy(g, m, displayText);
   }
 
+  private void generateBy(Generator g, GeneratorModel m, String displayText, Integer a, Integer b) throws Exception {
+    System.out.println("***************************************************************");
+    System.out.println("* BEGIN generate " +a + "/" +  b + "  " + displayText + ",时间:" + LocalDateTime.now());
+    System.out.println("***************************************************************");
+    List<Exception> exceptions = g.generateBy(m.templateModel, m.filePathModel);
+    if (exceptions.size() > 0) {
+      System.err.println("[Generate Error Summary]");
+      for (Exception e : exceptions) {
+        GLogger.error("[GENERATE ERROR]:",e);
+      }
+    }
+    
+    System.out.println("* End generate " + displayText + ",时间:" + LocalDateTime.now());
+  }
+  
   private void generateBy(Generator g, GeneratorModel m, String displayText) throws Exception {
     System.out.println("***************************************************************");
     System.out.println("* BEGIN generate " + displayText + ",时间:" + LocalDateTime.now());
