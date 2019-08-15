@@ -474,10 +474,13 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 			GLogger.info("");
 			GLogger.info("***************************************************************");
 			GLogger.info("*********************Generate Success**************************");
-			GLogger.info("***************************************************************");
 
 			long endTime = System.currentTimeMillis();
-			String executeTime = "生成表个数:1" + "\r\n 生成表名称:"+  genTableName +"\r \n 执行时间:" +( endTime-startTime) +"ms \r\n";
+			String executeTime = "生成表个数:1" +  "\n 执行时间:" +( endTime-startTime) +"ms \r\n";
+			
+			GLogger.info("生成表个数:{0}" ,1);
+			GLogger.info("执行时间: {0} ms", endTime-startTime);
+			GLogger.info("***************************************************************");
 			
 			result.setText(executeTime + retMsg);
 

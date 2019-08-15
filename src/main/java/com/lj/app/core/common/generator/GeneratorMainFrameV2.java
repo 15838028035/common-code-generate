@@ -357,8 +357,8 @@ public class GeneratorMainFrameV2 extends CommonGeneratorMainFrame  {
 			long endTime = System.currentTimeMillis();
 			String executeTime = "生成表个数:" + jTable.getSelectedRows().length + "\r \n 执行时间:" +( endTime-startTime) +"ms \r\n";
 			
-			GLogger.info("生成表个数:" + jTable.getSelectedRows().length);
-			GLogger.info("执行时间:" + ( endTime-startTime) +"ms");
+			GLogger.info("生成表个数:{0}" , jTable.getSelectedRows().length);
+			GLogger.info("执行时间: {0} ms", endTime-startTime);
 			GLogger.info("***************************************************************");
 			
 			result.setText(executeTime + retMsg);

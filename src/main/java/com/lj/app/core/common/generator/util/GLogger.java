@@ -1,5 +1,7 @@
 package com.lj.app.core.common.generator.util;
 
+import java.text.MessageFormat;
+
 /**
  * 
  * 生成器日志类
@@ -33,6 +35,26 @@ public class GLogger {
   public static void info(String s) {
     if (logLevel <= INFO) {
       System.out.println("[Generator INFO] " + s);
+    }
+  }
+  
+  /**
+   * 打印
+   * 
+   * @param s
+   *          字符信息
+   */
+  public static void info(String s, Object... arguments) {
+	  
+	  String formattedMessage;
+      if (arguments != null) {
+          formattedMessage = MessageFormat.format(s, arguments);
+      } else {
+          formattedMessage = s;
+      }
+      
+    if (logLevel <= INFO) {
+      System.out.println("[Generator INFO] " + formattedMessage);
     }
   }
 
