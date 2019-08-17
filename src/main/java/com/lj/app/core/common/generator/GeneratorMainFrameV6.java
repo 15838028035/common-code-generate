@@ -534,6 +534,6 @@ public class GeneratorMainFrameV6 extends CommonGeneratorMainFrame  {
    * @param args 运行参数
    */
   public static void main(String [] args)  {
-    new GeneratorMainFrameV6("代码生成器V5");
+    new GeneratorMainFrameV6("代码生成器V6");
   }
 }

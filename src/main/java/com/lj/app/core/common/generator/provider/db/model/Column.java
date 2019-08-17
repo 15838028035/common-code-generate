@@ -1,5 +1,7 @@
 package com.lj.app.core.common.generator.provider.db.model;
 
+import java.io.Serializable;
+
 import com.lj.app.core.common.generator.GeneratorProperties;
 import com.lj.app.core.common.generator.util.ActionScriptDataTypesUtils;
 import com.lj.app.core.common.generator.util.DatabaseDataTypesUtils;
@@ -9,7 +11,7 @@ import com.lj.app.core.common.generator.util.JdbcType;
 import com.lj.app.core.common.generator.util.StringHelper;
 import com.lj.app.core.common.generator.util.TestDataGenerator;
 
-public class Column {
+public class Column implements Serializable {
   private final Table _table;
   private final int _sqlType;
   private final String _sqlTypeName;
