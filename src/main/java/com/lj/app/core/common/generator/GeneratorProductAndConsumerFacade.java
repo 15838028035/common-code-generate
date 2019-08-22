@@ -113,9 +113,7 @@ public class GeneratorProductAndConsumerFacade {
    * @throws Exception  异常
    */
   public void add(List<TableViewData> list) throws Exception {
-	  for(TableViewData  tableViewDataObj:list){
-		  blockingQueue.add(tableViewDataObj);
-	 }
+	  list.forEach(TableViewData-> blockingQueue.add(TableViewData) );
   }
   
   /**
@@ -124,7 +122,6 @@ public class GeneratorProductAndConsumerFacade {
    * @throws Exception  异常
    */
   public void consumerTable() throws Exception {
-	  
 	  while(blockingQueue.size()>0) {
 		  TableViewData tableViewData = (TableViewData)  blockingQueue.take();
 		  

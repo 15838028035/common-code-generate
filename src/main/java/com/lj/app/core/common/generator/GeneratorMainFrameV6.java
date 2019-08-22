@@ -45,8 +45,6 @@ import com.lj.app.core.common.generator.util.StringHelper;
  *
  */
 public class GeneratorMainFrameV6 extends CommonGeneratorMainFrame  {
-  
-    
     
   /**
    * 
@@ -62,7 +60,6 @@ public class GeneratorMainFrameV6 extends CommonGeneratorMainFrame  {
    */
   @Override
   public void addComponent() {
-    
 	    
     jdbcUrl = new JLabel("JdbcUrl：");
     add(g, c, jdbcUrl, 0, 1, 1, 1);
@@ -81,7 +78,6 @@ public class GeneratorMainFrameV6 extends CommonGeneratorMainFrame  {
     jdbcPasswordTextFiled = new JTextField(50);
     jdbcPasswordTextFiled.setText(jdbcPasswordProp);
     add(g, c, jdbcPasswordTextFiled, 1, 3, 1, 1);
-    
 
     templateDir = new JLabel("模板目录：");
 
@@ -183,7 +179,6 @@ public class GeneratorMainFrameV6 extends CommonGeneratorMainFrame  {
     result = new JTextArea(5, 60);
 
     add(g, c, new JScrollPane(result), 0, 1000, 10, 2);
-        
 
   }
 
