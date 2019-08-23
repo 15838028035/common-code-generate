@@ -3,6 +3,7 @@ package com.lj.app.core.common.generator;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -260,12 +261,12 @@ public class GeneratorProductAndConsumerFacade {
      * @return 生成模型
      */
     public static GeneratorModel newFromTable(Table table) {
-      Map templateModel = new HashMap();
+      Map<Object,Object> templateModel = new HashMap<>();
       templateModel.putAll(GeneratorProperties.getProperties());
       templateModel.put("table", table);
       templateModel.putAll(getShareVars());
 
-      Map filePathModel = new HashMap();
+      Map<Object,Object> filePathModel = new HashMap<>();
       filePathModel.putAll(GeneratorProperties.getProperties());
       filePathModel.putAll(BeanHelper.describe(table));
       filePathModel.putAll(getShareVars());
@@ -273,12 +274,12 @@ public class GeneratorProductAndConsumerFacade {
     }
 
     public static GeneratorModel newFromClass(Class clazz) {
-      Map templateModel = new HashMap();
+      Map<Object,Object> templateModel = new HashMap<>();
       templateModel.putAll(GeneratorProperties.getProperties());
       templateModel.put("clazz", new JavaClass(clazz));
       templateModel.putAll(getShareVars());
 
-      Map filePathModel = new HashMap();
+      Map<Object,Object> filePathModel = new HashMap<>();
       filePathModel.putAll(GeneratorProperties.getProperties());
       filePathModel.putAll(BeanHelper.describe(clazz));
       filePathModel.putAll(getShareVars());
@@ -286,8 +287,8 @@ public class GeneratorProductAndConsumerFacade {
     }
   }
 
-  public static Map getShareVars() {
-    Map templateModel = new HashMap();
+  public static Map<Object,Object> getShareVars() {
+    Map<Object,Object> templateModel = new HashMap<>();
     templateModel.putAll(System.getProperties());
     templateModel.putAll(GeneratorProperties.getProperties());
     templateModel.put("env", System.getenv());
@@ -300,18 +301,19 @@ public class GeneratorProductAndConsumerFacade {
   }
 
   /** 得到模板可以引用的工具类 */
-  private static Map getToolsMap() {
-    Map toolsMap = new HashMap();
+  private static Map<Object,Object> getToolsMap() {
+    Map<Object,Object> toolsMap = new HashMap<>();
     String[] tools = GeneratorProperties.getStringArray(GeneratorConstants.GENERATOR_TOOLS_CLASS);
-    for (String className : tools) {
-      try {
-        Object instance = ClassHelper.newInstance(className);
-        toolsMap.put(Class.forName(className).getSimpleName(), instance);
-        GLogger.debug("put tools class:" + className + " with key:" + Class.forName(className).getSimpleName());
-      } catch (Exception e) {
-        GLogger.error("cannot load tools by className:" + className + " cause:" + e);
-      }
-    }
+    Arrays.asList(tools).forEach(className -> {
+    	try {
+            Object instance = ClassHelper.newInstance(className);
+            toolsMap.put(Class.forName(className).getSimpleName(), instance);
+            GLogger.debug("put tools class:" + className + " with key:" + Class.forName(className).getSimpleName());
+          } catch (Exception e) {
+            GLogger.error("cannot load tools by className:" + className + " cause:" + e);
+          }
+    });
+    
     return toolsMap;
   }
 
