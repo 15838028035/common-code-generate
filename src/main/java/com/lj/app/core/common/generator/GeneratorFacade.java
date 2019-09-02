@@ -170,10 +170,10 @@ public class GeneratorFacade {
    *
    */
   public static class GeneratorModel {
-    private  Map filePathModel;
-    private  Map templateModel;
+    private  Map<Object,Object> filePathModel;
+    private  Map<Object,Object> templateModel;
 
-    public GeneratorModel(Map templateModel, Map filePathModel) {
+    public GeneratorModel(Map<Object,Object> templateModel, Map<Object,Object> filePathModel) {
       this.templateModel = templateModel;
       this.filePathModel = filePathModel;
     }
@@ -184,12 +184,12 @@ public class GeneratorFacade {
      * @return 生成模型
      */
     public static GeneratorModel newFromTable(Table table) {
-      Map templateModel = new HashMap();
+      Map<Object,Object> templateModel = new HashMap<>();
       templateModel.putAll(GeneratorProperties.getProperties());
       templateModel.put("table", table);
       templateModel.putAll(getShareVars());
 
-      Map filePathModel = new HashMap();
+      Map<Object,Object> filePathModel = new HashMap<>();
       filePathModel.putAll(GeneratorProperties.getProperties());
       filePathModel.putAll(BeanHelper.describe(table));
       filePathModel.putAll(getShareVars());
@@ -197,12 +197,12 @@ public class GeneratorFacade {
     }
 
     public static GeneratorModel newFromClass(Class clazz) {
-      Map templateModel = new HashMap();
+      Map<Object,Object> templateModel = new HashMap<>();
       templateModel.putAll(GeneratorProperties.getProperties());
       templateModel.put("clazz", new JavaClass(clazz));
       templateModel.putAll(getShareVars());
 
-      Map filePathModel = new HashMap();
+      Map<Object,Object> filePathModel = new HashMap<>();
       filePathModel.putAll(GeneratorProperties.getProperties());
       filePathModel.putAll(BeanHelper.describe(clazz));
       filePathModel.putAll(getShareVars());
@@ -210,8 +210,8 @@ public class GeneratorFacade {
     }
   }
 
-  public static Map getShareVars() {
-    Map templateModel = new HashMap();
+  public static Map<Object,Object> getShareVars() {
+    Map<Object,Object> templateModel = new HashMap<>();
     templateModel.putAll(System.getProperties());
     templateModel.putAll(GeneratorProperties.getProperties());
     templateModel.put("env", System.getenv());
@@ -224,8 +224,8 @@ public class GeneratorFacade {
   }
 
   /** 得到模板可以引用的工具类 */
-  private static Map getToolsMap() {
-    Map toolsMap = new HashMap();
+  private static Map<Object,Object> getToolsMap() {
+    Map<Object,Object> toolsMap = new HashMap<>();
     String[] tools = GeneratorProperties.getStringArray(GeneratorConstants.GENERATOR_TOOLS_CLASS);
     for (String className : tools) {
       try {

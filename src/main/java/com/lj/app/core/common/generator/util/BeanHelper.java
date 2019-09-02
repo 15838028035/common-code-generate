@@ -14,11 +14,11 @@ import java.util.Map;
  *
  */
 public class BeanHelper {
-  public static Map describe(Object obj) {
+  public static Map<Object,Object> describe(Object obj) {
     if ((obj instanceof Map)) {
       return (Map) obj;
     }
-    Map map = new HashMap();
+    Map<Object,Object> map = new HashMap<>();
     PropertyDescriptor[] descriptors = getPropertyDescriptors(obj.getClass());
     for (int i = 0; i < descriptors.length; i++) {
       String name = descriptors[i].getName();
