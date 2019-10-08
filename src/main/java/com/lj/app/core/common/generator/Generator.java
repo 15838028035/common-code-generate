@@ -193,10 +193,10 @@ public class Generator {
 
     templateRootDirs =  processTemplateRootDirs(); //新增处理zip、jar等模版目录
 
-    List allExceptions = new ArrayList();
+    List<Exception> allExceptions = new ArrayList<>();
     for (int i = 0; i < this.templateRootDirs.size(); i++) {
       File templateRootDir = (File) this.templateRootDirs.get(i);
-      List exceptions = generateBy(templateRootDir, templateModel, filePathModel);
+      List<Exception> exceptions = generateBy(templateRootDir, templateModel, filePathModel);
       allExceptions.addAll(exceptions);
     }
     return allExceptions;
@@ -209,10 +209,10 @@ public class Generator {
     System.out
         .println("-------------------load template from templateRootDir = '" + templateRootDir.getAbsolutePath() + "'");
 
-    List<File> templateFiles = new ArrayList();
+    List<File> templateFiles = new ArrayList<>();
     FileHelper.listFiles(templateRootDir, templateFiles);
    
-    List exceptions = new ArrayList();
+    List<Exception> exceptions = new ArrayList<>();
     for (int i = 0; i < templateFiles.size(); i++) {
       File templateFile = (File) templateFiles.get(i);
       String templateRelativePath = FileHelper.getRelativePath(templateRootDir, templateFile);
