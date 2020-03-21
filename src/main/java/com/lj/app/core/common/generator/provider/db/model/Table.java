@@ -29,6 +29,11 @@ public class Table {
   public static final String FKTABLE_NAME = "FKTABLE_NAME";
   public static final String FKCOLUMN_NAME = "FKCOLUMN_NAME";
   public static final String KEY_SEQ = "KEY_SEQ";
+  
+  /**
+	 * 排序编号
+	 */
+	private Integer sortNo;
 
   public Set<Column> getColumns() {
     return this.columns;
@@ -210,4 +215,13 @@ public class Table {
   public String toString() {
     return "Database Table:" + getSqlName() + " to ClassName:" + getClassName();
   }
+
+public Integer getSortNo() {
+	return sortNo;
+}
+
+public void setSortNo(Integer sortNo) {
+	this.sortNo = sortNo;
+}
+  
 }

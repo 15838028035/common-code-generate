@@ -382,7 +382,7 @@ public class Generator {
     return list;
   }
 
-  private void generateNewFileOrInsertIntoFile(Map templateModel, String targetFilename, Configuration config,
+  public void generateNewFileOrInsertIntoFile(Map templateModel, String targetFilename, Configuration config,
       String templateFile, String outputFilePath) throws Exception {
     Template template = config.getTemplate(templateFile);
     template.setOutputEncoding(this.encoding);
