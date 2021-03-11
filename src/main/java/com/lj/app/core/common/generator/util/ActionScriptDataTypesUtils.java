@@ -9,7 +9,11 @@ import java.util.Map;
  *
  */
 public class ActionScriptDataTypesUtils {
-  private static final Map<String, String> preferredAsTypeForJavaType = new HashMap();
+	private ActionScriptDataTypesUtils() {
+		// 空构造
+	}
+	
+  private static final Map<String, String> preferredAsTypeForJavaType = new HashMap<>();
 
   /**
    * 获得引用类型

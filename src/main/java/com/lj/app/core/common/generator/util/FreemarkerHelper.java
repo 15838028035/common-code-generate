@@ -32,7 +32,7 @@ public class FreemarkerHelper {
    * @return 列表
    */
   public static List<String> getAvailableAutoInclude(Configuration conf, List<String> autoIncludes) {
-    List<String> results = new ArrayList();
+    List<String> results = new ArrayList<>();
     for (String autoInclude : autoIncludes) {
       try {
         Template t = new Template("__auto_include_test__", new StringReader("1"), conf);

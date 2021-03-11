@@ -6,6 +6,10 @@ package com.lj.app.core.common.generator.util.typemapping;
  *
  */
 public class DatabaseTypeUtils {
+	private DatabaseTypeUtils() {
+		// 空构造
+	}
+	
   /**
    * 根据驱动类获得数据库类型
    * @param driver 驱动类

@@ -168,7 +168,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 
     c.insets = new Insets(8, 2, 4, 0);
 
-    add(g, c, submit, 1, 9000, 1, 1);
+    add(g, c, submit, 1, 900, 1, 1);
 
     result = new JTextArea(5, 60);
 
@@ -305,7 +305,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 			      GLogger.info("开始更新表格数据,.........表格数据条数:" + vData.size());
 			   
 			      jTable.updateUI();
-			      FitTableColumns(jTable);
+			      fitTableColumns(jTable);
 			      
 			      retMsg="查询表名称:" +queryTable.getSqlName() + "\r\n 表备注:" +queryTable.getRemarks() +"\r\n";
 

@@ -40,7 +40,7 @@ import freemarker.template.TemplateException;
  */
 public class Generator {
   private static final String GENERATOR_INSERT_LOCATION = "generator-insert-location";
-  private List<File> templateRootDirs = new ArrayList();
+  private List<File> templateRootDirs = new ArrayList<>();
   private String outRootDir;
   private boolean ignoreTemplateGenerateException = true;
   private String removeExtensions = GeneratorProperties.getProperty(GeneratorConstants.GENERATOR_REMOVE_EXTENSIONS);

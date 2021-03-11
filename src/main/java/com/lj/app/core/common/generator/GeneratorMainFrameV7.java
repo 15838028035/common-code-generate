@@ -87,7 +87,6 @@ public class GeneratorMainFrameV7 extends CommonGeneratorMainFrame  {
     jdbcPasswordTextFiled = new JTextField(50);
     jdbcPasswordTextFiled.setText(jdbcPasswordProp);
     add(g, c, jdbcPasswordTextFiled, 1, 3, 1, 1);
-    
 
     templateDir = new JLabel("模板目录：");
 
@@ -240,7 +239,7 @@ public class GeneratorMainFrameV7 extends CommonGeneratorMainFrame  {
 				 List<Table> result = DbTableFactory.getInstance().releaseConnection().getAllTables();
 			      
 			      //清空容器
-				 GLogger.info("VdataSize:" + vData.size());
+				 GLogger.info("VdataSize{0}", vData.size());
 				 vData.clear();
 				 
 				 // 性能优化，不要再for循环中创建对象
@@ -334,22 +333,20 @@ public class GeneratorMainFrameV7 extends CommonGeneratorMainFrame  {
 				 for(int rowindex : jTable.getSelectedRows()){
 					 tableObj = new Table();
 					 		
-					 GLogger.info("选表格数据1" + rowindex + " " + jTable.getValueAt(rowindex, 1));
-					 GLogger.info("选表格数据2" + rowindex + " " + jTable.getValueAt(rowindex, 2));
-					 GLogger.info("选表格数据3" + rowindex + " " + jTable.getValueAt(rowindex, 3));
+					 GLogger.info("选表格数据1{0} {1}" ,rowindex ,jTable.getValueAt(rowindex, 1));
+					 GLogger.info("选表格数据2{0} {1}" ,rowindex , jTable.getValueAt(rowindex, 2));
+					 GLogger.info("选表格数据3 {0} {1}" , rowindex , jTable.getValueAt(rowindex, 3));
 					 
 					tableObj.setSqlName((String)jTable.getValueAt(rowindex, 2));
 					tableObj.setSortNo(Integer.valueOf(jTable.getValueAt(rowindex, 5).toString()));
 						
-						
-						tableDataList.add(tableObj);
-						
+				    tableDataList.add(tableObj);
 				 }
 				 
 				 //自定义按照sortNo排序
-			        Collections.sort(tableDataList,new Comparator(){
+			        Collections.sort(tableDataList,new Comparator<Table>(){
 			            @Override
-			            public int compare(Object o1, Object o2) {
+			            public int compare(Table o1, Table o2) {
 			            	Table dableViewData1 = (Table)o1;
 			            	Table dableViewData2 = (Table)o2;
 			                 return dableViewData2.getSortNo().compareTo(dableViewData1.getSortNo());
@@ -360,7 +357,7 @@ public class GeneratorMainFrameV7 extends CommonGeneratorMainFrame  {
 			        	System.out.println(table);
 			        	String sqlTableName = table.getSqlName();
 			        	try{
-			        		table = DbTableFactory.getInstance().releaseConnection().getTable(sqlTableName);
+			        		table = DbTableFactory.getInstance().getTable(sqlTableName);
 			        		tableDataList2.add(table);
 			        	}catch(Exception e) {
 			        		GLogger.error("查询数据库失败", e);
@@ -410,6 +407,7 @@ public class GeneratorMainFrameV7 extends CommonGeneratorMainFrame  {
 		@SuppressWarnings("serial")
 		DefaultTableModel tableModel = new DefaultTableModel(data, tableHead){
 			
+			@Override
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int column){
 				Class returnValue;

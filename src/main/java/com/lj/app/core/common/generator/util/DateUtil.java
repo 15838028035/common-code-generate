@@ -39,8 +39,7 @@ public class DateUtil {
    */
   public static String getNowDate(String format) {
     SimpleDateFormat sd = new SimpleDateFormat(format);
-    String date = sd.format(new Date(System.currentTimeMillis()));
-    return date;
+    return sd.format(new Date(System.currentTimeMillis()));
   }
 
   /**
@@ -104,8 +103,7 @@ public class DateUtil {
   public static String toTimeStr(String time) {
     if (time == null)
       return null;
-    String timeStr = time.substring(0, time.indexOf("+"));
-    return timeStr;
+    return time.substring(0, time.indexOf("+"));
   }
 
   public static String toDateStr(String date) {
@@ -131,8 +129,7 @@ public class DateUtil {
       return null;
 
     SimpleDateFormat dateFormat = new SimpleDateFormat(style);
-    Date date = dateFormat.parse(timeStr);
-    return date;
+    return dateFormat.parse(timeStr);
   }
 
   public static Timestamp handleTimeStrToTimestamp(String timeStr, String style) throws ParseException {
@@ -141,8 +138,7 @@ public class DateUtil {
 
     SimpleDateFormat dateFormat = new SimpleDateFormat(style);
     Date date = dateFormat.parse(timeStr);
-    Timestamp timestamp = new Timestamp(date.getTime());
-    return timestamp;
+    return new Timestamp(date.getTime());
   }
 
   public static String handleTimestampToTimeStr(Timestamp timestamp, String style) {
@@ -150,8 +146,7 @@ public class DateUtil {
       return null;
 
     SimpleDateFormat dateFormat = new SimpleDateFormat(style);
-    String timestampStr = dateFormat.format(new Date(timestamp.getTime()));
-    return timestampStr;
+    return dateFormat.format(new Date(timestamp.getTime()));
   }
 
   public static String handleDateTimeStyle(String timeStr, String oldStyle, String newStyle) {
@@ -595,7 +590,12 @@ public class DateUtil {
    */
   public static Date toDate(String monthStr, String dayStr, String yearStr, String hourStr, String minuteStr,
       String secondStr) {
-    int month, day, year, hour, minute, second;
+    int month;
+    int day;
+    int year;
+    int hour;
+    int minute;
+    int second;
 
     try {
       month = Integer.parseInt(monthStr);
@@ -859,8 +859,7 @@ public class DateUtil {
     Calendar c = Calendar.getInstance();
     c.setTimeInMillis(stamp.getTime());
     c.add(calendarField, amount);
-    Timestamp retStamp = new Timestamp(c.getTime().getTime());
-    return retStamp;
+    return  new Timestamp(c.getTime().getTime());
   }
 
   // ----- New methods that take a timezone and locale -- //
@@ -1035,7 +1034,7 @@ public class DateUtil {
     Calendar tempCal = Calendar.getInstance(locale);
     tempCal.set(Calendar.DAY_OF_WEEK, tempCal.getFirstDayOfWeek());
     SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE", locale);
-    List<String> resultList = new ArrayList<String>();
+    List<String> resultList = new ArrayList<>();
     for (int i = 0; i < 7; i++) {
       resultList.add(dateFormat.format(tempCal.getTime()));
       tempCal.roll(Calendar.DAY_OF_WEEK, 1);
@@ -1053,7 +1052,7 @@ public class DateUtil {
     Calendar tempCal = Calendar.getInstance(locale);
     tempCal.set(Calendar.MONTH, Calendar.JANUARY);
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM", locale);
-    List<String> resultList = new ArrayList<String>();
+    List<String> resultList = new ArrayList<>();
     for (int i = Calendar.JANUARY; i <= tempCal.getActualMaximum(Calendar.MONTH); i++) {
       resultList.add(dateFormat.format(tempCal.getTime()));
       tempCal.roll(Calendar.MONTH, 1);

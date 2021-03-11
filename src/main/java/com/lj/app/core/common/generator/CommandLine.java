@@ -129,7 +129,7 @@ public class CommandLine {
 		}else if("quit".equalsIgnoreCase(cmd)) {
 		    System.exit(0);
 		}else {
-			System.err.println(" [ERROR] unknow command:"+cmd);
+			GLogger.error(" [ERROR] unknow command:"+cmd);
 		}
 	}
 
