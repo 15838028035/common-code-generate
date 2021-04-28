@@ -174,7 +174,7 @@ public class GeneratorMainFrameV6 extends CommonGeneratorMainFrame  {
 
     c.insets = new Insets(8, 2, 4, 0);
 
-    add(g, c, submit, 1, 9000, 1, 1);
+    add(g, c, submit, 1, 900, 1, 1);
 
     result = new JTextArea(5, 60);
 

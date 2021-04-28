@@ -54,6 +54,16 @@ public class Column implements Serializable {
    */
   private String formShowType = "input";
   
+  /**
+   * 是否生成唯一性
+   */
+  private Boolean genUnique = true;
+
+  /**
+   * 是否生成最小值、最大值
+   */
+  private Boolean genMinMax = true;
+  
 	/**
 	 * 排序编号
 	 */
@@ -368,5 +378,21 @@ public class Column implements Serializable {
   public void setListColumnIsShow(Boolean listColumnIsShow) {
       this.listColumnIsShow = listColumnIsShow;
   }
+
+public Boolean getGenUnique() {
+	return genUnique;
+}
+
+public void setGenUnique(Boolean genUnique) {
+	this.genUnique = genUnique;
+}
+
+public Boolean getGenMinMax() {
+	return genMinMax;
+}
+
+public void setGenMinMax(Boolean genMinMax) {
+	this.genMinMax = genMinMax;
+}
   
 }

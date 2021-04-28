@@ -37,23 +37,22 @@ import com.lj.app.core.common.generator.provider.db.DbTableFactory;
 import com.lj.app.core.common.generator.provider.db.model.Column;
 import com.lj.app.core.common.generator.provider.db.model.Table;
 import com.lj.app.core.common.generator.util.GLogger;
+import com.lj.app.core.common.generator.util.StringHelper;
 
 /**
  * 
  * 代码生成器Frame
  *
  */
-public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
-  
-    
+public class GeneratorMainFrameV8 extends CommonGeneratorMainFrame  {
     
   /**
    * 
    * 代码生成器Frame
    *
    */
-  public GeneratorMainFrameV5(String str) {
-      super(str,1240,1024);
+  public GeneratorMainFrameV8(String str) {
+      super(str,1600,1024);
   }
 
   /**
@@ -61,7 +60,6 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
    */
   @Override
   public void addComponent() {
-    
 	    
     jdbcUrl = new JLabel("JdbcUrl：");
     add(g, c, jdbcUrl, 0, 1, 1, 1);
@@ -80,7 +78,6 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
     jdbcPasswordTextFiled = new JTextField(50);
     jdbcPasswordTextFiled.setText(jdbcPasswordProp);
     add(g, c, jdbcPasswordTextFiled, 1, 3, 1, 1);
-    
 
     templateDir = new JLabel("模板目录：");
 
@@ -122,11 +119,20 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
     outRootProCheckBox = new JCheckBox("清空输出目录",true);
     add(g, c, outRootProCheckBox, 1, 9, 2, 1);
     
+    
+    table = new JLabel("查询表名：");
+    add(g, c, table, 0,10, 1, 1);
+
+    tableTextField = new JTextField(50);
+    tableTextField.setText("");
+    add(g, c, tableTextField, 1,10, 2, 1);
+    
     btnQuery = new JButton("查询");
 
-    c.insets = new Insets(8, 10, 4, 0);
+    c.insets = new Insets(8, 11, 4, 0);
 
-    add(g, c, btnQuery, 1, 10, 1, 1);
+    add(g, c, btnQuery, 1, 11, 1, 1);
+  
     
     DefaultTreeModel treeModelPointed = new DefaultTreeModel(root);//利用根节点创建树模型，并采用非默认的判断方式
 	 jTree = new javax.swing.JTree(treeModelPointed);
@@ -145,20 +151,22 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
     vName.add("表单是否显示");
     vName.add("表单类型");
     vName.add("排序编号");
+    vName.add("唯一性校验");
+    vName.add("是否生成最小值、最大值校验");
     
      jTable = new JTable(new DefaultTableModel(vData , vName));
      
-     jTable.setPreferredScrollableViewportSize(new Dimension(700, 512));
+     jTable.setPreferredScrollableViewportSize(new Dimension(1200, 512));
    
      JScrollPane jScrollPane = new JScrollPane(jTable);
      
-     jScrollPane.setPreferredSize(new Dimension(700, 512));
+     jScrollPane.setPreferredSize(new Dimension(1200, 512));
      
      JPanel jpanel = new JPanel();
      jpanel.add(jTreePane);
      jpanel.add(jScrollPane);
      
-    add(g, c,  jpanel, 1, 11, 800, 512);
+    add(g, c,  jpanel, 1, 12, 1200, 512);
     
     jTable.setFillsViewportHeight(true);  
     jTable.updateUI(); 
@@ -173,7 +181,6 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
     result = new JTextArea(5, 60);
 
     add(g, c, new JScrollPane(result), 0, 1000, 10, 2);
-        
 
   }
 
@@ -298,7 +305,26 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
                 
                 vTmp.add(i+1);
                 
-			            vData.add(vTmp);
+                if(columnObj.getIsStringColumn()){
+                    vTmp.add(true);
+               }else {
+                    vTmp.add(false);
+               }
+                
+                if(columnObj.getIsStringColumn()){
+                    vTmp.add(true);
+               }else {
+                    vTmp.add(false);
+               }
+                
+                jTable.getColumnModel().getColumn(10).setCellEditor(jTable.getDefaultEditor(Boolean.class));
+                jTable.getColumnModel().getColumn(10).setCellRenderer(jTable.getDefaultRenderer(Boolean.class));
+                
+                jTable.getColumnModel().getColumn(11).setCellEditor(jTable.getDefaultEditor(Boolean.class));
+                jTable.getColumnModel().getColumn(11).setCellRenderer(jTable.getDefaultRenderer(Boolean.class));
+                
+                
+			       vData.add(vTmp);
 			            i++;
 		    	  }
 		    	   
@@ -335,6 +361,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 			String jdbcUsername = jdbcUsernameTextFiled.getText();
 			String jdbcPasswordText = jdbcPasswordTextFiled.getText();
 			
+			String tableText = tableTextField.getText();
 			String retMsg = "查询数据库成功";
 			
 			long startTime = System.currentTimeMillis();
@@ -351,8 +378,15 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 				 root.removeAllChildren();
 			    
 			      resultList.iterator().forEachRemaining(tableTmp -> {
-			    	  DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(tableTmp.getSqlName(),true);
-			        root.add(treeNode);
+			    	  if(StringHelper.isNotBlank(tableText)) {
+				    	  if(tableTmp.getSqlName().contains(tableText) || tableTmp.getRemarks().contains(tableText)) {
+				    		  DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(tableTmp.getSqlName(),true);
+				    		  root.add(treeNode);
+				    	  }
+			    	  } else {
+			    		  DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(tableTmp.getSqlName(),true);
+			    		  root.add(treeNode);
+			    	  }
 			      });
 			    
 			      //查询后，默认展开树
@@ -444,6 +478,9 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 		    		  	Boolean formIsShow = (Boolean)jTable.getValueAt(i, 7);
 		    		  	String formShowType = (String)jTable.getValueAt(i, 8);
 		    		  	
+		    		  	Boolean genUnique = (Boolean)jTable.getValueAt(i, 10);
+		    		  	Boolean genMinMax = (Boolean)jTable.getValueAt(i,11);
+		    		  	
 		    		  	columnObj.setListIsShow(listIsShow);
 		    		  	
 		    		  	columnObj.setListColumnIsShow(listColumnIsShow);
@@ -451,6 +488,10 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 		    		    columnObj.setFormIsShow(formIsShow);
 		    		  	columnObj.setFormShowType(formShowType);
 		    		  	columnObj.setSortNo(Integer.valueOf(jTable.getValueAt(i, 9).toString()));
+		    		  	
+		    		  	columnObj.setGenUnique(genUnique);
+		    		  	columnObj.setGenMinMax(genMinMax);
+		    		  	
 		    		  	tableColumSet.add(columnObj);
 		    		  	
 			            i++;
@@ -462,7 +503,7 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
 		          
 			      table.setColumns(sortSet);
 			      
-			      g.generateByTable(g.createGeneratorForDbTable(), table);
+			      g.generateByTable(g.createGeneratorForDbTable(), table, 1,1);
 				      
 				Runtime.getRuntime().exec("cmd.exe /c start " + outRootStr);
 			} catch (Exception e) {
@@ -516,6 +557,6 @@ public class GeneratorMainFrameV5 extends CommonGeneratorMainFrame  {
    * @param args 运行参数
    */
   public static void main(String [] args)  {
-    new GeneratorMainFrameV5("代码生成器V5");
+    new GeneratorMainFrameV8("代码生成器V8");
   }
 }
