@@ -54,20 +54,21 @@ public class Column implements Serializable {
    */
   private String formShowType = "input";
   
-  /**
-   * 是否生成唯一性
-   */
-  private Boolean genUnique = true;
-
-  /**
-   * 是否生成最小值、最大值
-   */
-  private Boolean genMinMax = true;
-  
 	/**
 	 * 排序编号
 	 */
 	private Integer sortNo;
+	
+ /**
+   * 是否生成唯一性
+   */
+  private Boolean genUnique = false;
+  
+  /**
+   * 是否生成最大值
+   */
+  private Boolean genMinMax = false;
+	
 
   public Column(Table table, int sqlType, String sqlTypeName, String sqlName, int size, int decimalDigits, boolean isPk,
       boolean isFk, String fkTableName, boolean isNullable, boolean isIndexed, boolean isUnique, String defaultValue,
@@ -379,20 +380,13 @@ public class Column implements Serializable {
       this.listColumnIsShow = listColumnIsShow;
   }
 
-public Boolean getGenUnique() {
-	return genUnique;
-}
-
-public void setGenUnique(Boolean genUnique) {
-	this.genUnique = genUnique;
-}
-
-public Boolean getGenMinMax() {
-	return genMinMax;
-}
-
-public void setGenMinMax(Boolean genMinMax) {
-	this.genMinMax = genMinMax;
-}
+    public void setGenUnique(Boolean genUnique) {
+        this.genUnique = genUnique;
+        
+    }
+    public void setGenMinMax(Boolean genMinMax) {
+        this.genMinMax = genMinMax;
+        
+    }
   
 }

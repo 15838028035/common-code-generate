@@ -305,39 +305,39 @@ public class BytecodeReadingParanamer implements Paranamer {
     /**
      * The type of CONSTANT_Fieldref constant pool items.
      */
-    final static int FIELD = 9;
+    static final int FIELD = 9;
     /**
      * The type of CONSTANT_Methodref constant pool items.
      */
-    final static int METH = 10;
+    static final int METH = 10;
     /**
      * The type of CONSTANT_InterfaceMethodref constant pool items.
      */
-    final static int IMETH = 11;
+    static final int IMETH = 11;
     /**
      * The type of CONSTANT_Integer constant pool items.
      */
-    final static int INT = 3;
+    static final int INT = 3;
     /**
      * The type of CONSTANT_Float constant pool items.
      */
-    final static int FLOAT = 4;
+    static final int FLOAT = 4;
     /**
      * The type of CONSTANT_Long constant pool items.
      */
-    final static int LONG = 5;
+    static final int LONG = 5;
     /**
      * The type of CONSTANT_Double constant pool items.
      */
-    final static int DOUBLE = 6;
+    static final int DOUBLE = 6;
     /**
      * The type of CONSTANT_NameAndType constant pool items.
      */
-    final static int NAME_TYPE = 12;
+    static final int NAME_TYPE = 12;
     /**
      * The type of CONSTANT_Utf8 constant pool items.
      */
-    final static int UTF8 = 1;
+    static final int UTF8 = 1;
 
     // ------------------------------------------------------------------------
     // Constructors
@@ -736,83 +736,83 @@ public class BytecodeReadingParanamer implements Paranamer {
     /**
      * The sort of the <tt>void</tt> type.
      */
-    private final static int VOID = 0;
+    private static final int VOID = 0;
     /**
      * The sort of the <tt>boolean</tt> type.
      */
-    private final static int BOOLEAN = 1;
+    private static final int BOOLEAN = 1;
     /**
      * The sort of the <tt>char</tt> type.
      */
-    private final static int CHAR = 2;
+    private static final int CHAR = 2;
     /**
      * The sort of the <tt>byte</tt> type.
      */
-    private final static int BYTE = 3;
+    private static final int BYTE = 3;
     /**
      * The sort of the <tt>short</tt> type.
      */
-    private final static int SHORT = 4;
+    private static final int SHORT = 4;
     /**
      * The sort of the <tt>int</tt> type.
      */
-    private final static int INT = 5;
+    private static final int INT = 5;
     /**
      * The sort of the <tt>float</tt> type.
      */
-    private final static int FLOAT = 6;
+    private static final int FLOAT = 6;
     /**
      * The sort of the <tt>long</tt> type.
      */
-    private final static int LONG = 7;
+    private static final int LONG = 7;
     /**
      * The sort of the <tt>double</tt> type.
      */
-    private final static int DOUBLE = 8;
+    private static final int DOUBLE = 8;
     /**
      * The sort of array reference types.
      */
-    private final static int ARRAY = 9;
+    private static final int ARRAY = 9;
     /**
      * The sort of object reference type.
      */
-    private final static int OBJECT = 10;
+    private static final int OBJECT = 10;
     /**
      * The <tt>void</tt> type.
      */
-    private final static Type VOID_TYPE = new Type(VOID, null, ('V' << 24) | (5 << 16) | (0 << 8) | 0, 1);
+    private static final Type VOID_TYPE = new Type(VOID, null, ('V' << 24) | (5 << 16) | (0 << 8) | 0, 1);
     /**
      * The <tt>boolean</tt> type.
      */
-    private final static Type BOOLEAN_TYPE = new Type(BOOLEAN, null, ('Z' << 24) | (0 << 16) | (5 << 8) | 1, 1);
+    private static final Type BOOLEAN_TYPE = new Type(BOOLEAN, null, ('Z' << 24) | (0 << 16) | (5 << 8) | 1, 1);
     /**
      * The <tt>char</tt> type.
      */
-    private final static Type CHAR_TYPE = new Type(CHAR, null, ('C' << 24) | (0 << 16) | (6 << 8) | 1, 1);
+    private static final Type CHAR_TYPE = new Type(CHAR, null, ('C' << 24) | (0 << 16) | (6 << 8) | 1, 1);
     /**
      * The <tt>byte</tt> type.
      */
-    private final static Type BYTE_TYPE = new Type(BYTE, null, ('B' << 24) | (0 << 16) | (5 << 8) | 1, 1);
+    private static final Type BYTE_TYPE = new Type(BYTE, null, ('B' << 24) | (0 << 16) | (5 << 8) | 1, 1);
     /**
      * The <tt>short</tt> type.
      */
-    private final static Type SHORT_TYPE = new Type(SHORT, null, ('S' << 24) | (0 << 16) | (7 << 8) | 1, 1);
+    private static final Type SHORT_TYPE = new Type(SHORT, null, ('S' << 24) | (0 << 16) | (7 << 8) | 1, 1);
     /**
      * The <tt>int</tt> type.
      */
-    private final static Type INT_TYPE = new Type(INT, null, ('I' << 24) | (0 << 16) | (0 << 8) | 1, 1);
+    private static final Type INT_TYPE = new Type(INT, null, ('I' << 24) | (0 << 16) | (0 << 8) | 1, 1);
     /**
      * The <tt>float</tt> type.
      */
-    private final static Type FLOAT_TYPE = new Type(FLOAT, null, ('F' << 24) | (2 << 16) | (2 << 8) | 1, 1);
+    private static final Type FLOAT_TYPE = new Type(FLOAT, null, ('F' << 24) | (2 << 16) | (2 << 8) | 1, 1);
     /**
      * The <tt>long</tt> type.
      */
-    private final static Type LONG_TYPE = new Type(LONG, null, ('J' << 24) | (1 << 16) | (1 << 8) | 2, 1);
+    private static final Type LONG_TYPE = new Type(LONG, null, ('J' << 24) | (1 << 16) | (1 << 8) | 2, 1);
     /**
      * The <tt>double</tt> type.
      */
-    private final static Type DOUBLE_TYPE = new Type(DOUBLE, null, ('D' << 24) | (3 << 16) | (3 << 8) | 2, 1);
+    private static final Type DOUBLE_TYPE = new Type(DOUBLE, null, ('D' << 24) | (3 << 16) | (3 << 8) | 2, 1);
     // ------------------------------------------------------------------------
     // Fields
     // ------------------------------------------------------------------------

@@ -376,6 +376,7 @@ public class GeneratorMainFrameV2 extends CommonGeneratorMainFrame  {
 		@SuppressWarnings("serial")
 		DefaultTableModel tableModel = new DefaultTableModel(data, tableHead){
 			
+			@Override
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int column){
 				Class returnValue;

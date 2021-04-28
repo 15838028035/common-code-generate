@@ -284,7 +284,7 @@ public class GeneratorMainFrameV4 extends CommonGeneratorMainFrame  {
 				      GLogger.info("开始更新表格数据,.........表格数据条数:" + vData.size());
 				   
 				      jTable.updateUI();
-				      FitTableColumns(jTable);
+				      fitTableColumns(jTable);
 			    	  return ;
 			      }
 

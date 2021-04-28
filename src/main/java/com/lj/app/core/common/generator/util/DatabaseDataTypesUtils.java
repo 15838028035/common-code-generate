@@ -135,19 +135,19 @@ public class DatabaseDataTypesUtils {
   private static class IntStringMap extends HashMap {
 
     public String getString(int i) {
-      return (String) get(new Integer(i));
+      return (String) get(Integer.valueOf(1));
     }
 
     public String[] getStrings(int i) {
-      return (String[]) (String[]) get(new Integer(i));
+      return (String[]) (String[]) get(Integer.valueOf(1));
     }
 
     public void put(int i, String s) {
-      put(new Integer(i), s);
+      put(Integer.valueOf(1), s);
     }
 
     public void put(int i, String[] sa) {
-      put(new Integer(i), sa);
+      put(Integer.valueOf(1), sa);
     }
 
   }

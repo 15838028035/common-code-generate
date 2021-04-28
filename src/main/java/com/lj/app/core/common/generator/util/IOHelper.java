@@ -46,7 +46,7 @@ public class IOHelper {
   public static List<String> readLines(Reader input) {
     try {
       BufferedReader reader = new BufferedReader(input);
-      List list = new ArrayList();
+      List<String> list = new ArrayList<>();
       String line = reader.readLine();
       while (line != null) {
         list.add(line);

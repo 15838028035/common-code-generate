@@ -232,7 +232,7 @@ public abstract class CommonGeneratorMainFrame extends JFrame  {
 
 	    setVisible(true);
 
-	    setLocationRelativeTo(null);// 设居中显示;
+	    setLocationRelativeTo(null);
   }
   
   /**
@@ -258,7 +258,7 @@ public abstract class CommonGeneratorMainFrame extends JFrame  {
 
     setVisible(true);
 
-    setLocationRelativeTo(null);// 设居中显示;
+    setLocationRelativeTo(null);
 
   }
 
@@ -335,7 +335,7 @@ public abstract class CommonGeneratorMainFrame extends JFrame  {
    * 表格根据内容自适应列宽
    * @param myTable
    */
-  public void FitTableColumns(JTable myTable){
+  public void fitTableColumns(JTable myTable){
       JTableHeader header = myTable.getTableHeader();
          int rowCount = myTable.getRowCount();
          Enumeration columns = myTable.getColumnModel().getColumns();

@@ -548,7 +548,7 @@ public class StringUtil {
    * @return 字符串集合
    */
   public static List<String> splitString(String str, int length) {
-    List<String> list = new ArrayList();
+    List<String> list = new ArrayList<>();
     for (int i = 0; i < str.length(); i += length) {
       int endIndex = i + length;
       if (endIndex <= str.length()) {
@@ -591,7 +591,7 @@ public class StringUtil {
     str = trimBlank(str);
     String[] strArray = str.split(",");
 
-    List<String> strList = new ArrayList();
+    List<String> strList = new ArrayList<>();
     for (String strObj : strArray) {
       strList.add(strObj);
     }
@@ -1117,7 +1117,7 @@ public class StringUtil {
     return newStr.toString();
   }
 
-  public static List randomOrder(List list) {
+  public static List<Object> randomOrder(List<Object> list) {
     Object temp = null;
     int idx = 0;
     for (int i = 0; i < list.size(); i++) {

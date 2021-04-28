@@ -27,7 +27,7 @@ public class FileHelper {
 
   /** 搜索目录下的所有文件,并忽略如 .svn .cvs等文件 */
   public static List<File> searchAllNotIgnoreFile(File dir) {
-    ArrayList arrayList = new ArrayList();
+    ArrayList<File> arrayList = new ArrayList<>();
     searchAllNotIgnoreFile(dir, arrayList);
     Collections.sort(arrayList, new Comparator<File>() {
       public int compare(File o1, File o2) {
@@ -133,7 +133,7 @@ public class FileHelper {
     throw new FileNotFoundException("classpath:" + resourceName);
   }
 
-  public static void listFiles(File file, List collector) throws IOException {
+  public static void listFiles(File file, List<File> collector) throws IOException {
     collector.add(file);
     if ((!file.isHidden()) && (file.isDirectory()) && (!isIgnoreFile(file))) {
       File[] subFiles = file.listFiles();
@@ -143,7 +143,7 @@ public class FileHelper {
   }
 
   private static boolean isIgnoreFile(File file) {
-    List ignoreList = new ArrayList();
+    List<String> ignoreList = new ArrayList<>();
     ignoreList.add(".svn");
     ignoreList.add("CVS");
     ignoreList.add(".cvsignore");
@@ -161,7 +161,7 @@ public class FileHelper {
     return false;
   }
 
-  private  static Set binaryExtentionsList = new HashSet();
+  private  static Set<String> binaryExtentionsList = new HashSet<>();
   static {
     loadBinaryExtentionsList("binary_filelist.txt", true);
   }
