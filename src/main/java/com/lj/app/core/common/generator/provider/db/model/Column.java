@@ -388,5 +388,13 @@ public class Column implements Serializable {
         this.genMinMax = genMinMax;
         
     }
+
+	public Boolean getGenUnique() {
+		return genUnique;
+	}
+
+	public Boolean getGenMinMax() {
+		return genMinMax;
+	}
   
 }
