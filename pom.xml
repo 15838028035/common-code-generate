@@ -43,7 +43,7 @@
 <properties>
 		<!-- 主要依赖库的版本定义 -->
 		<junit.version>4.11</junit.version>
-		<mysql.version>5.1.43</mysql.version>
+		<mysql.version>8.0.28</mysql.version>
 		<org.apache.maven.plugins.maven-assembly-plugin.version>3.0.0</org.apache.maven.plugins.maven-assembly-plugin.version>
 
 		<!-- Plugin的属性定 -->
